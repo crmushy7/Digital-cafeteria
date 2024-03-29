@@ -14,7 +14,6 @@ public class UserDetails {
     private static final String KEY_PASSWORD = "password";
     private static final String KEY_FCM_TOKEN = "FCM_Token";
     private static final String KEY_Amount = "Amount";
-
     private static String fullName;
     private static String password;
     private static String phoneNumber;
@@ -24,7 +23,6 @@ public class UserDetails {
     private static String profilePic;
     private static String FCM_Token;
     private static String amount;
-
     public static void init(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         fullName = sharedPreferences.getString(KEY_FULL_NAME, null);
@@ -37,7 +35,6 @@ public class UserDetails {
         FCM_Token = sharedPreferences.getString(KEY_FCM_TOKEN, null);
         amount = sharedPreferences.getString(KEY_Amount, null);
     }
-
     public static String getFullName() {
         return fullName;
     }
@@ -56,11 +53,9 @@ public class UserDetails {
     public static String getGender() {
         return gender;
     }
-
     public static String getPhoneNumber() {
         return phoneNumber;
     }
-
     public static String getEmail() {
         return email;
     }

@@ -37,6 +37,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -47,6 +48,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import org.w3c.dom.Text;
 
@@ -83,26 +85,26 @@ public class DashBoard extends AppCompatActivity {
     ProgressDialog progressDialog;
  FoodAdapter adapter;
  HistoryAdapter historyAdapter;
+    public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
         OurTime.init(getApplicationContext());
         UserDetails.init(getApplicationContext());
-        fullName=UserDetails.getFullName();
+        refresh();
         user_email=UserDetails.getEmail();
         user_dob=UserDetails.getDob();
-        phonenumber=UserDetails.getPhoneNumber();
         user_gender=UserDetails.getGender();
         user_profilePic=UserDetails.getProfilePic();
         String[] salio=UserDetails.getAmount().split(" ");
-//        userBalance=salio[0];
+
         handler=new Handler(Looper.getMainLooper());
         ImageView topProfilePic=findViewById(R.id.db_topProfilepic);
         ImageView cardProfilePic=findViewById(R.id.db_cardProfilepic);
-        TextView user_Name=findViewById(R.id.db_userName);
+        user_Name=findViewById(R.id.db_userName);
         TextView user_Email=findViewById(R.id.db_userEmail);
-        TextView user_Pno=findViewById(R.id.db_userphoneNumber);
+        user_Pno=findViewById(R.id.db_userphoneNumber);
         recyclerView=(RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new GridLayoutManager(this,3));
         adapter=new FoodAdapter(new ArrayList<>());
@@ -127,7 +129,7 @@ public class DashBoard extends AppCompatActivity {
         LinearLayout profileLayout = (LinearLayout) findViewById(R.id.profileLayout);
         TextView viewBalanance1 = (TextView) findViewById(R.id.viewBalance1);
         TextView accountBalance1 = (TextView) findViewById(R.id.accountBalance1);
-        user_Name.setText(fullName);
+        user_Name.setText(fullName+"");
         user_Email.setText(user_email);
 
         user_Pno.setText(phonenumber);
@@ -137,12 +139,12 @@ public class DashBoard extends AppCompatActivity {
         TextView backtoprofile = (TextView) findViewById(R.id.backtoprofiletv);
         ImageView topPic=findViewById(R.id.pp_topProfilePic);
         ImageView smallPic=findViewById(R.id.pp_cardProfilePic);
-        TextView ppUsername=findViewById(R.id.pp_userName);
+        ppUsername=findViewById(R.id.pp_userName);
         TextView ppUseremail=findViewById(R.id.pp_userEmail);
-        TextView ppUsertopphone=findViewById(R.id.pp_userphone);
-        TextView ppUserFname=findViewById(R.id.pp_userFname);
-        TextView ppUserLname=findViewById(R.id.pp_userLname);
-        TextView ppUsersmallphone=findViewById(R.id.pp_userNewPhone);
+        ppUsertopphone=findViewById(R.id.pp_userphone);
+        ppUserFname=findViewById(R.id.pp_userFname);
+        ppUserLname=findViewById(R.id.pp_userLname);
+        ppUsersmallphone=findViewById(R.id.pp_userNewPhone);
         TextView ppUsersmallemail=findViewById(R.id.pp_userNewEmail);
         TextView ppUserdob=findViewById(R.id.pp_userDOB);
         handler.post(() -> {
@@ -173,72 +175,8 @@ public class DashBoard extends AppCompatActivity {
         ppUsersmallemail.setText(user_email);
         ppUserdob.setText(user_dob);
 
-        if (FirebaseAuth.getInstance().getUid()==null){
-            startActivity(new Intent(DashBoard.this, Registration.class));
-        }else {
-            DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("All Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Details");
 
-                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        if (snapshot.exists()) {
-                                            // Retrieve user details from Firebase snapshot
-                                            String Amount = snapshot.child("Amount").getValue(String.class);
-                                            userBalance=Amount;
-                                        }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-                                        // Handle error
-                                    }
-                                });
-
-            }
-
-//        Thread thread3=new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    while (!isInterrupted()) {
-//                        Thread.sleep(30);
-//                        runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (FirebaseAuth.getInstance().getUid()==null){
-//                                    startActivity(new Intent(DashBoard.this,Registration.class));
-//                                    finish();
-//                                }
-//
-//
-//                                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("All Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Details");
-//
-//                                userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                        if (snapshot.exists()) {
-//                                            // Retrieve user details from Firebase snapshot
-//                                            String Amount = snapshot.child("Amount").getValue(String.class);
-//                                            userBalance=Amount;
-//                                        }
-//                                    }
-//
-//                                    @Override
-//                                    public void onCancelled(@NonNull DatabaseError error) {
-//                                        // Handle error
-//                                    }
-//                                });
-//
-//                            }
-//                        });
-//                    }
-//                } catch (InterruptedException e) {
-//                    throw new RuntimeException(e);
-//                }
-//
-//            }
-//        };
-//        thread3.start();
 
 
         backtoprofile.setOnClickListener(new View.OnClickListener() {
@@ -506,8 +444,8 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         dashbordinsideLayout.setVisibility(View.VISIBLE);
         profileLayout.setVisibility(View.GONE);
         myhistoryLayout.setVisibility(View.GONE);
-
         navigationLayout.setVisibility(View.VISIBLE);
+
     }
 });
         viewBalanance.setOnClickListener(new View.OnClickListener() {
@@ -845,11 +783,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
                                                             if (task.isSuccessful()) {
-                                                                Toast.makeText(DashBoard.this, "Updated successfully,log in again", Toast.LENGTH_LONG).show();
-                                                                FirebaseAuth.getInstance().signOut();
-                                                                Intent intent = new Intent(DashBoard.this, Registration.class);
-                                                                startActivity(intent);
-                                                                finish();
+                                                                Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                                                SharedPreferences sharedPreferences=getSharedPreferences("User_data",MODE_PRIVATE);
+                                                                String amount=sharedPreferences.getString("password",null);
+                                                                SharedPreferences.Editor editor= sharedPreferences.edit();
+                                                                editor.putString("Password",newData+"");
+                                                                editor.apply();
+                                                                progressDialog.dismiss();
                                                             }else{
                                                                 progressDialog.dismiss();
                                                                 Exception exception = task.getException();
@@ -868,13 +808,27 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                         }
                                     });
 
-                                }else{
-                                    Toast.makeText(DashBoard.this, "Updated successfully,log in again", Toast.LENGTH_LONG).show();
-                                    FirebaseAuth.getInstance().signOut();
+                                }else if (updateChild=="Fullname"){
+                                    SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
+                                    String amount=sharedPreferences.getString("full_name",null);
+                                    SharedPreferences.Editor editor= sharedPreferences.edit();
+                                    editor.putString("full_name",newData+"");
+                                    editor.apply();
+                                    UserDetails.init(getApplicationContext());
+                                    refresh();
+                                    Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
                                     progressDialog.dismiss();
-                                    Intent intent = new Intent(DashBoard.this, Registration.class);
-                                    startActivity(intent);
-                                    finish();
+                                    dialog.dismiss();
+                                }else{
+                                    SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
+                                    SharedPreferences.Editor editor= sharedPreferences.edit();
+                                    editor.putString("phone_number",newData+"");
+                                    editor.apply();
+                                    UserDetails.init(getApplicationContext());
+                                    refresh();
+                                    Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                    progressDialog.dismiss();
+                                    dialog.dismiss();
                                 }
                             }
                         }
@@ -910,12 +864,20 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         ImageView foodImage=popupView.findViewById(R.id.fc_foodImage);
         TextView foodName=popupView.findViewById(R.id.fc_foodName);
         TextView foodprice=popupView.findViewById(R.id.fc_foodPrice);
+        TextView dismissbutton=popupView.findViewById(R.id.ad_dismissbtn);
 
         Glide.with(DashBoard.this)
                 .load(foodSetGet.getItemImage())
                 .into(foodImage);
         foodName.setText(foodSetGet.getFoodName()+"");
         foodprice.setText(foodSetGet.getFoodPrice());
+
+        dismissbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
 
         confirmbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -936,32 +898,68 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                            progressDialog.show();
                        });
                        int salioFinal=availableAmount-food_price;
-                       DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("All Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Details");
-
-                       userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                       handler.postDelayed(new Runnable() {
                            @Override
-                           public void onDataChange(@NonNull DataSnapshot snapshot) {
-                               if (snapshot.exists()) {
-                                   // Retrieve user details from Firebase snapshot
-                                   String Amount = snapshot.child("Amount").getValue(String.class);
-                                   userRef.child("Amount").setValue(salioFinal+" TZS").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                       @Override
-                                       public void onComplete(@NonNull Task<Void> task) {
-                                           progressDialog.dismiss();
-                                           confirm.setVisibility(View.GONE);
-                                           success.setVisibility(View.VISIBLE);
-                                           error.setVisibility(View.GONE);
-                                           userBalance=salioFinal+"";
+                           public void run() {
+                               progressDialog.dismiss();
+                               Toast.makeText(DashBoard.this, "please Check your internet connection", Toast.LENGTH_SHORT).show();
+                           }
+                       },10000);
+                       handler.postDelayed(new Runnable() {
+                           @Override
+                           public void run() {
+                               DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("All Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString()).child("Details");
+
+                               userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                   @Override
+                                   public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                       if (snapshot.exists()) {
+                                           // Retrieve user details from Firebase snapshot
+                                           String Amount = snapshot.child("Amount").getValue(String.class);
+                                           userRef.child("Amount").setValue(salioFinal+" TZS").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                               @Override
+                                               public void onComplete(@NonNull Task<Void> task) {
+                                                   SharedPreferences sharedPreferences=getSharedPreferences("User_data",MODE_PRIVATE);
+                                                   String amount=sharedPreferences.getString("Amount",null);
+                                                   SharedPreferences.Editor editor= sharedPreferences.edit();
+                                                   editor.putString("Amount",salioFinal+" TZS");
+                                                   editor.apply();
+                                                   UserDetails.init(getApplicationContext());
+                                                   refresh();
+                                                   progressDialog.dismiss();
+                                                   confirm.setVisibility(View.GONE);
+                                                   success.setVisibility(View.VISIBLE);
+                                                   error.setVisibility(View.GONE);
+                                                   userBalance=salioFinal+"";
+                                               }
+                                           }).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                               @Override
+                                               public void onSuccess(Void unused) {
+                                                   progressDialog.dismiss();
+                                                   Toast.makeText(DashBoard.this, "success", Toast.LENGTH_SHORT).show();
+                                               }
+                                           }).addOnFailureListener(new OnFailureListener() {
+                                               @Override
+                                               public void onFailure(@NonNull Exception e) {
+                                                   progressDialog.dismiss();
+                                                   Toast.makeText(DashBoard.this, "Failed due to "+e, Toast.LENGTH_SHORT).show();
+                                               }
+                                           });
+                                       }else{
+
                                        }
-                                   });
-                               }
-                           }
+                                   }
 
-                           @Override
-                           public void onCancelled(@NonNull DatabaseError error) {
-                               // Handle error
+                                   @Override
+                                   public void onCancelled(@NonNull DatabaseError error) {
+                                       // Handle error
+                                   }
+                               });
+
+                               handler.removeCallbacksAndMessages(null);
+                               progressDialog.dismiss();
                            }
-                       });
+                       },10000);
 
                    }else{
 
@@ -990,7 +988,28 @@ dialog.dismiss();
         });
 
         dialog = builder.create();
+        dialog.setCancelable(false);
         dialog.show();
+    }
+    public void refresh(){
+        userBalance=UserDetails.getAmount();
+        ppUsername=findViewById(R.id.pp_userName);
+        ppUsertopphone=findViewById(R.id.pp_userphone);
+        ppUserFname=findViewById(R.id.pp_userFname);
+        ppUserLname=findViewById(R.id.pp_userLname);
+        ppUsersmallphone=findViewById(R.id.pp_userNewPhone);
+        user_Name=findViewById(R.id.db_userName);
+        user_Pno=findViewById(R.id.db_userphoneNumber);
+        fullName=UserDetails.getFullName();
+        String[] parts= fullName.split(" ");
+        phonenumber= UserDetails.getPhoneNumber();
+        user_Name.setText(fullName+"");
+        user_Pno.setText(phonenumber+"");
+        ppUsername.setText(fullName);
+        ppUsertopphone.setText(phonenumber);
+        ppUserFname.setText(parts[0]);
+        ppUserLname.setText(parts[1]);
+        ppUsersmallphone.setText(phonenumber);
     }
 
 

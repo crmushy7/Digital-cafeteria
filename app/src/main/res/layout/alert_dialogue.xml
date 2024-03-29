@@ -25,6 +25,7 @@
                 android:textStyle="bold"
                 />
             <TextView
+                android:id="@+id/ad_dismissbtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
