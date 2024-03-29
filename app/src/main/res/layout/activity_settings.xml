@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".DashBoard"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="210sp"
+        android:id="@+id/topLayout"
+        android:background="@drawable/dashboardbg"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200sp"
+
+            android:background="@drawable/img"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15sp"
+                android:orientation="horizontal"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="70sp"
+                    android:text="DTC"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/white"
+                    android:textSize="30dp"
+                    android:textStyle="bold"
+                    android:fontFamily="sans-serif"
+                    android:drawableLeft="@drawable/foodicon"
+                    android:layout_weight="1"
+                    />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="70sp"
+                    app:cardCornerRadius="1000sp"
+                    android:background="@color/white"
+                    android:layout_height="70sp">
+                    <ImageView
+                        android:id="@+id/sa_topProfilePic"
+                        android:layout_width="70sp"
+                        android:layout_height="70sp"
+                        android:background="@color/white"
+                        android:src="@drawable/person2"
+                        android:layout_gravity="center"/>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_marginTop="-110dp"
+        android:layout_marginLeft="15sp"
+        android:layout_marginRight="15sp"
+
+        android:background="@drawable/profile"
+        android:id="@+id/secondLayout"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="15sp"
+            android:layout_marginEnd="15sp"
+            android:layout_marginTop="15sp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="70sp"
+                        app:cardCornerRadius="1000sp"
+                        android:background="@color/white"
+                        android:layout_height="70sp">
+                        <ImageView
+                            android:id="@+id/sa_cardProfilePic"
+                            android:layout_width="70sp"
+                            android:layout_height="70sp"
+                            android:src="@drawable/person2"
+                            android:background="@color/white"
+                            android:layout_gravity="center"/>
+                    </androidx.cardview.widget.CardView>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="70sp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5sp"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/sa_user_Fullname"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Hamadi Simba"
+                            android:textColor="@color/orange"
+                            android:textStyle="bold"
+                            android:textSize="18dp"
+                            />
+                        <TextView
+                            android:id="@+id/sa_user_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="hamadisimba@gmail.com"
+                            android:layout_marginTop="3sp"
+                            android:textColor="@color/orange"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/sa_user_phone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0689353561"
+                        android:textColor="@color/black"
+                        android:textSize="20sp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="10sp"
+                        android:textStyle="bold"/>
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="15sp"
+        android:layout_marginTop="15sp"
+
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40sp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notifications"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+
+                android:gravity="center"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/notificationicon"
+
+
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/toggleon"
+     />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40sp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save History in Local storage"
+                android:fontFamily="sans-serif"
+
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/savelocal"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/toggleoff"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40sp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Confirmation by PIN"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+
+                android:gravity="center"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/pinconfirmation"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableRight="@drawable/toggleoff"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="40sp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="App Info"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:drawableLeft="@drawable/appinfo"
+                />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70sp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginStart="15sp"
+        android:layout_marginEnd="15sp"
+        android:background="@color/white"
+        android:layout_marginBottom="10sp"
+        >
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/homeBtn"
+            android:layout_width="60sp"
+            android:layout_height="match_parent"
+            android:text="home"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:drawableTop="@drawable/home"
+            android:background="@color/white"
+            android:textStyle="bold"
+            />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/feedbackBtn"
+            android:layout_width="60sp"
+            android:layout_height="match_parent"
+            android:text="Feedback"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@color/white"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:drawableTop="@drawable/feedback_icon"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/settingsBtn"
+            android:layout_width="60sp"
+            android:layout_height="match_parent"
+            android:text="Settings"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/time"
+            android:textStyle="bold"
+            android:drawableTop="@drawable/settings"
+
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/profileBtn"
+            android:layout_width="60sp"
+            android:background="@color/white"
+            android:layout_height="match_parent"
+            android:text="Profile"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:drawableTop="@drawable/person3"
+            />
+    </LinearLayout>
+
+
+
+</RelativeLayout>
