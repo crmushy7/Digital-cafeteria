@@ -11,13 +11,18 @@ import java.util.SimpleTimeZone;
 
 public class OurTime {
     private static String timeStatus="";
+    private static String orderTime="";
     public static void init(Context context)
     {
         Calendar calendar = Calendar.getInstance();
         String currentdate = DateFormat.getInstance().format(calendar.getTime());
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss a", Locale.getDefault());
+        SimpleDateFormat simpleOrderDateFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
         String formattedTime = simpleDateFormat.format(new Date());
+        String formattedOrderTime = simpleOrderDateFormat.format(new Date());
 
+
+        orderTime=currentdate+"Hrs ";
 
         int currentHour=calendar.get(Calendar.HOUR_OF_DAY);
         if(currentHour>=6 && currentHour<12)
@@ -35,5 +40,8 @@ public class OurTime {
     }
     public static String getTimeStatus(){
         return timeStatus;
+    }
+    public static String getOrderTime(){
+        return orderTime;
     }
 }

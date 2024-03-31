@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".coupon"
     android:background="@drawable/historybackground">
 <LinearLayout
     android:layout_width="match_parent"

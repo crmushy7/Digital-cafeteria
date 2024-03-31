@@ -362,6 +362,8 @@ public class Registration extends AppCompatActivity {
                     dateofBirth.setError("Field required");
                 } else if (passwd.isEmpty()) {
                     pass.setText("Field required");
+                } else if (passwd.length()<6) {
+                    pass.setError("Must contain atleast 6 characters");
                 } else if (confp.isEmpty()) {
                     confPass.setError("Field required");
                 } else if (!passwd.equals(confp)) {

@@ -29,6 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
+                android:paddingLeft="14sp"
+                android:paddingRight="10sp"
                 android:layout_gravity="end|center_horizontal"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -120,9 +122,12 @@
                 android:textStyle="bold"
                 />
             <TextView
+                android:id="@+id/ad_dismissError"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
+                android:paddingLeft="14sp"
+                android:paddingRight="10sp"
                 android:layout_gravity="end|center_horizontal"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -148,7 +153,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/fc_foodStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Insufficient Balance"
@@ -159,7 +163,6 @@
             android:textColor="#FF1493"
             />
         <TextView
-            android:id="@+id/fc_foodStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="You don't have enough funds to\n buy this food.\nPlease choose another Menu\nor\nDeposit in your balance"
@@ -205,9 +208,12 @@
                 android:textStyle="bold"
                 />
             <TextView
+                android:id="@+id/ad_dismisSucces"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="X"
+                android:paddingLeft="14sp"
+                android:paddingRight="10sp"
                 android:layout_gravity="end|center_horizontal"
                 android:textColor="@color/black"
                 android:textSize="20sp"
@@ -234,7 +240,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/fc_foodStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Success"
@@ -256,7 +261,6 @@
             android:textColor="@color/black"
             />
         <TextView
-            android:id="@+id/fc_foodStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Coupon Generated"

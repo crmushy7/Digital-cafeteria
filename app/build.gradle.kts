@@ -50,5 +50,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics:21.5.0")
     implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("com.google.firebase:firebase-messaging:23.4.1")
+    implementation("com.google.guava:guava:30.1-android")
+
 
 }
