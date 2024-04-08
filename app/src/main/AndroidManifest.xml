@@ -44,16 +44,12 @@
         <activity
             android:name=".DashBoard"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.dtcsapp"/>
         <activity
             android:name=".login"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:screenOrientation="portrait">
-        </activity>
     </application>
 
 </manifest>

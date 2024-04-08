@@ -68,7 +68,6 @@ public class DashBoard extends AppCompatActivity {
     private List<FoodSetGet>foodList=new ArrayList<>();
     public static HistoryAdapter historyAdapter;
     public static RecyclerView myHistoryRecyclerView;
-
     RecyclerView recyclerView;
     private AlertDialog dialog;
     TextView meal_clock,meal_status;
@@ -84,7 +83,7 @@ public class DashBoard extends AppCompatActivity {
     public static String user_dob;
     Handler handler;
     ProgressDialog progressDialog;
- FoodAdapter adapter;
+    FoodAdapter adapter;
     public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1060,6 +1059,8 @@ dialog.dismiss();
 //                success.setVisibility(View.GONE);
 //                error.setVisibility(View.GONE);
                 dialog.dismiss();
+                depositDialogue();
+
             }
         });
 
@@ -1067,6 +1068,40 @@ dialog.dismiss();
         dialog.setCancelable(false);
         dialog.show();
     }
+
+    public void depositDialogue(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
+        View popupView = LayoutInflater.from(DashBoard.this).inflate(R.layout.deposit, null);
+
+        EditText mobileNumber = popupView.findViewById(R.id.dep_mobilenumber);
+        EditText amount = popupView.findViewById(R.id.dep_amount);
+        TextView depTitle = popupView.findViewById(R.id.dep_title);
+        ImageView imageView=popupView.findViewById(R.id.dep_image);
+        Button proceedtoUpdate = popupView.findViewById(R.id.dep_confirm_button);
+        LinearLayout airtel=popupView.findViewById(R.id.dep_airtel);
+        LinearLayout vodacom=popupView.findViewById(R.id.dep_vodacom);
+        LinearLayout halotel=popupView.findViewById(R.id.dep_halotel);
+        LinearLayout tigo=popupView.findViewById(R.id.dep_tigo);
+        LinearLayout choosemethod=popupView.findViewById(R.id.dep_choosemethod);
+        LinearLayout choosenMethod=popupView.findViewById(R.id.dep_choosenMethod);
+        builder.setView(popupView);
+        dialog = builder.create();
+        dialog.show();
+
+        airtel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosemethod.setVisibility(View.GONE);
+                choosenMethod.setVisibility(View.VISIBLE);
+                depTitle.setText("Deposit via Airtel Money");
+                Glide.with(DashBoard.this)
+                        .load(R.drawable.airtelmoney)
+                        .into(imageView);
+            }
+        });
+
+    }
+
     public void refresh(){
         userBalance=UserDetails.getAmount();
         ppUsername=findViewById(R.id.pp_userName);

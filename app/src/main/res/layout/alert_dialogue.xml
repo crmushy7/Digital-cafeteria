@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/profile"
@@ -143,13 +144,13 @@
             android:layout_gravity="center_horizontal">
 
                 <ImageView
-                    android:id="@+id/fc_foodImage"
                     android:layout_width="86sp"
                     android:layout_height="86sp"
                     android:background="@color/white"
                     android:layout_gravity="center"
                     android:src="@drawable/error"
-                    android:scaleType="fitXY"/>
+                    android:scaleType="fitXY"
+                    tools:ignore="DuplicateIds" />
         </LinearLayout>
 
         <TextView
@@ -175,7 +176,7 @@
             android:id="@+id/ad_deposit_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ok"
+            android:text="Deposit"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/white"
@@ -229,7 +230,6 @@
             android:layout_gravity="center_horizontal">
 
                 <ImageView
-                    android:id="@+id/fc_foodImage"
                     android:layout_width="90sp"
                     android:layout_height="90sp"
                     android:background="@color/white"
@@ -273,7 +273,7 @@
             android:id="@+id/ad_viewCoupon_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Coupon"
+            android:text="Ok"
             android:textSize="30sp"
             android:textStyle="bold"
             android:textColor="@color/white"

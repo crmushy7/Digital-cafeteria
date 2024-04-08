@@ -40,7 +40,7 @@
         android:id="@+id/welcome"
         android:layout_marginLeft="20sp"
         />
-
+<!--registration-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -193,6 +193,7 @@
 
 
                 </LinearLayout>
+<!--                date and password-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -315,6 +316,7 @@
 
 
                 </LinearLayout>
+<!--                choose photo-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -412,6 +414,7 @@
 
 
     </LinearLayout>
+<!--    login-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

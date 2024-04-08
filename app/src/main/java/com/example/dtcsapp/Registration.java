@@ -246,17 +246,34 @@ public class Registration extends AppCompatActivity {
                 int year = calendar.get(Calendar.YEAR);
                 int month = calendar.get(Calendar.MONTH);
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
+                Calendar currentDate = Calendar.getInstance();
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(Registration.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        dob.setText(dayOfMonth + "/ " + month + " / " + year);
+                        // Create a Calendar instance for the selected date
+                        Calendar selectedCalendar = Calendar.getInstance();
+                        selectedCalendar.set(year, month, dayOfMonth);
+
+                        // Compare the selected date with the current date
+                        if (selectedCalendar.compareTo(currentDate) >= 0) {
+                            // Selected date is greater than or equal to the current date
+                            Toast.makeText(getApplicationContext(), "Selected date is invalid", Toast.LENGTH_SHORT).show();
+                        } else {
+                            // Increment month by 1 since it's zero-based
+                            month += 1;
+                            // Format month to display it correctly
+                            String formattedMonth = (month < 10) ? "0" + month : String.valueOf(month);
+                            String formattedDate = (dayOfMonth < 10) ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
+                            dob.setText(formattedDate + "/ " + formattedMonth + " / " + year);
+                        }
                     }
                 }, year, month, day);
 
                 datePickerDialog.show();
             }
         });
+
 
 
         String jinsia[] = {"MALE", "FEMALE"};

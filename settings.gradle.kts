@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "DTCS App"
 include(":app")
- 
