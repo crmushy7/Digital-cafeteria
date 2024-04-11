@@ -227,6 +227,7 @@
             android:layout_marginStart="20sp"
             android:layout_marginEnd="20sp"
             android:layout_marginTop="5sp"
+            android:maxLength="10"
             android:hint="Example: 0766059740"
             android:inputType="number"
             android:paddingLeft="10sp"

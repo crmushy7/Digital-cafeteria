@@ -69,6 +69,7 @@ public class DashBoard extends AppCompatActivity {
     public static HistoryAdapter historyAdapter;
     public static RecyclerView myHistoryRecyclerView;
     RecyclerView recyclerView;
+    Thread thread;
     private AlertDialog dialog;
     TextView meal_clock,meal_status;
     public static String timeStatus="BreakFast";
@@ -83,6 +84,7 @@ public class DashBoard extends AppCompatActivity {
     public static String user_dob;
     Handler handler;
     ProgressDialog progressDialog;
+    public static ProgressDialog progressDialog2;
     FoodAdapter adapter;
     public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
     @Override
@@ -150,6 +152,11 @@ public class DashBoard extends AppCompatActivity {
             progressDialog = new ProgressDialog(DashBoard.this);
             progressDialog.setMessage("Loading, Please wait...Make sure you have a stable internet connection!");
             progressDialog.setCancelable(false);
+        });
+        handler.post(() -> {
+            progressDialog2 = new ProgressDialog(DashBoard.this);
+            progressDialog2.setMessage("ttttttttt, Please wait...Make sure you have a stable internet connection!");
+            progressDialog2.setCancelable(false);
         });
 
         if (user_profilePic != null){
@@ -276,6 +283,13 @@ public class DashBoard extends AppCompatActivity {
                 TextView email=findViewById(R.id.sa_user_email);
                 TextView pNo=findViewById(R.id.sa_user_phone);
                 LinearLayout logout=findViewById(R.id.se_logout);
+                LinearLayout deposit=findViewById(R.id.dashboard_deposit);
+                deposit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        depositDialogue();
+                    }
+                });
 
 
                 logout.setOnClickListener(new View.OnClickListener() {
@@ -1077,7 +1091,7 @@ dialog.dismiss();
         EditText amount = popupView.findViewById(R.id.dep_amount);
         TextView depTitle = popupView.findViewById(R.id.dep_title);
         ImageView imageView=popupView.findViewById(R.id.dep_image);
-        Button proceedtoUpdate = popupView.findViewById(R.id.dep_confirm_button);
+        Button proceedtoDeposit = popupView.findViewById(R.id.dep_confirm_button);
         LinearLayout airtel=popupView.findViewById(R.id.dep_airtel);
         LinearLayout vodacom=popupView.findViewById(R.id.dep_vodacom);
         LinearLayout halotel=popupView.findViewById(R.id.dep_halotel);
@@ -1099,7 +1113,108 @@ dialog.dismiss();
                         .into(imageView);
             }
         });
+        vodacom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosemethod.setVisibility(View.GONE);
+                choosenMethod.setVisibility(View.VISIBLE);
+                depTitle.setText("Deposit via Mpesa");
+                Glide.with(DashBoard.this)
+                        .load(R.drawable.mpesa)
+                        .into(imageView);
+            }
+        });
+        halotel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosemethod.setVisibility(View.GONE);
+                choosenMethod.setVisibility(View.VISIBLE);
+                depTitle.setText("Deposit via Halopesa");
+                Glide.with(DashBoard.this)
+                        .load(R.drawable.halopesa)
+                        .into(imageView);
+            }
+        });
+        tigo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                choosemethod.setVisibility(View.GONE);
+                choosenMethod.setVisibility(View.VISIBLE);
+                depTitle.setText("Deposit via Tigo Pesa");
+                Glide.with(DashBoard.this)
+                        .load(R.drawable.tigopesa)
+                        .into(imageView);
+            }
+        });
+        proceedtoDeposit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Deposit dpo = new Deposit(getApplicationContext());
+                String number=mobileNumber.getText().toString();
+                String kiasi=amount.getText().toString();
+                if (number.isEmpty()){
+                    mobileNumber.setError("Required");
+                } else if (number.length()<9) {
+                    mobileNumber.setError("Must be 10 numbers");
+                } else if (kiasi.isEmpty()) {
+                    amount.setError("Required");
+                }else{
+                    int finalAmount = Integer.parseInt(kiasi);
+                    int finalNumber=Integer.parseInt(number);
+                    if (finalAmount<1000){
+                        amount.setError("amount must start from 1000");
+                    }else {
+                        progressDialog2.show();
+                        dpo.nambaKiasi(number, kiasi);
+                        dpo.execute();
 
+
+                        thread=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                while(Deposit.FINALRESP.isEmpty()){
+
+                                }
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(!Deposit.FINALRESP.isEmpty()){
+                                            progressDialog2.dismiss();
+                                            Toast.makeText(DashBoard.this,Deposit.FINALRESP+"", Toast.LENGTH_LONG).show();
+                                            Deposit.FINALRESP = "";
+                                            threadDestroy();
+                                            Toast.makeText(DashBoard.this,Deposit.FINALRESP+"       bbbbbb", Toast.LENGTH_LONG).show();
+
+
+                                        }
+                                    }
+                                });
+                            }
+                        });
+                        thread.start();
+
+
+
+
+
+//
+                        handler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+//                                Toast.makeText(DashBoard.this, Deposit.FINALRESP+"", Toast.LENGTH_SHORT).show();
+
+
+                            }
+                        }, 10000);
+                    }
+                }
+            }
+        });
+
+    }
+    public void threadDestroy(){
+        thread.interrupt();
     }
 
     public void refresh(){
