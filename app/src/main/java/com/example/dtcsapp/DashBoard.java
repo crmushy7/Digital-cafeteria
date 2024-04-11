@@ -1238,7 +1238,7 @@ dialog.dismiss();
         ppUsersmallphone.setText(phonenumber);
     }
 
-    public static void couponHistory(Context context) {
+    public void couponHistory(Context context) {
 
 
         historyAdapter = new HistoryAdapter(new ArrayList<>());
@@ -1288,7 +1288,38 @@ dialog.dismiss();
         historyAdapter.setOnItemClickListener(new HistoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, HistorySetGet historySetGet) {
-                // Handle item click event if needed
+                if (historySetGet.getCoupon_status().equals("pending")){
+                    AlertDialog.Builder builder=new AlertDialog.Builder(DashBoard.this);
+                    View popupView = LayoutInflater.from(DashBoard.this).inflate(R.layout.coupon_with_qrcode, null);
+                    builder.setView(popupView);
+
+
+                    TextView couponID=popupView.findViewById(R.id.cwq_couponID);
+                    TextView dismissbtn=popupView.findViewById(R.id.cwq_dismissbtn);
+                    ImageView qrcodeImage=popupView.findViewById(R.id.cwq_qrCode);
+
+                    couponID.setText("ID: "+historySetGet.getCoupon_reference_Number());
+
+
+                    Bitmap qrCode=coupon.generateQRCodeBitmap(historySetGet);
+
+                    Glide.with(DashBoard.this)
+                            .load(qrCode)
+                            .into(qrcodeImage);
+
+                    dialog = builder.create();
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    dismissbtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                }else {
+                    Toast.makeText(context, historySetGet.getCoupon_status()+"!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

@@ -3,6 +3,15 @@ package com.example.dtcsapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 public class UserDetails {
     private static final String SHARED_PREF_NAME = "User_data";
     private static final String KEY_FULL_NAME = "full_name";
@@ -34,6 +43,21 @@ public class UserDetails {
         profilePic = sharedPreferences.getString(KEY_PROFILEPIC, null);
         FCM_Token = sharedPreferences.getString(KEY_FCM_TOKEN, null);
         amount = sharedPreferences.getString(KEY_Amount, null);
+
+        DatabaseReference userRef= FirebaseDatabase.getInstance().getReference().child("All Users")
+                .child(FirebaseAuth.getInstance().getUid().toString())
+                .child("Details");
+        userRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                amount=snapshot.child("Amount").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
     public static String getFullName() {
         return fullName;

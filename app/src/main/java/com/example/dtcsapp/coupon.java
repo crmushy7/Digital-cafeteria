@@ -44,22 +44,27 @@ public class coupon {
 
     public static void generateCoupon(Context context, FoodSetGet foodSetGet) {
         uniqueID=UniqueIDGenerator.generateUniqueID();
-        // Generate QR code bitmap with the data to be stored
-        Bitmap qrCodeBitmap = generateQRCodeBitmap(foodSetGet);
+        DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
+                .child("Coupons")
+                .child(FirebaseAuth.getInstance().getUid())
+                .push(); // Generate a unique key for the coupon
 
-        // Upload QR code image to Firebase Storage
-        if (qrCodeBitmap != null) {
-            uploadQRCodeImageToFirebaseStorage(context, qrCodeBitmap, foodSetGet);
-        }
+        couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
+        couponRef.child("Menu Time").setValue(OurTime.getOrderTime());
+        couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
+        couponRef.child("Status").setValue("pending");
+        couponRef.child("Reference Number").setValue(uniqueID);
+
+
+
     }
-
-    private static Bitmap generateQRCodeBitmap(FoodSetGet foodSetGet) {
+    public static Bitmap generateQRCodeBitmap(HistorySetGet historySetGet) {
         // Construct data string for QR code
-        String data = "Menu Name: " + foodSetGet.getFoodName() +
-                ", Menu Time: " + OurTime.getOrderTime() +
-                ", Menu Price: " + foodSetGet.getFoodPrice() +
+        String data = "Menu Name: " + historySetGet.getFood_name() +
+                ", Menu Time: " + historySetGet.getCoupon_date() +
+                ", Menu Price: " + historySetGet.getFood_price() +
                 ", Status: pending" +
-                ", Reference Number: " + uniqueID;
+                ", Reference Number: " + historySetGet.getCoupon_reference_Number();
 
         // Generate QR code bitmap
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
@@ -80,55 +85,5 @@ public class coupon {
             e.printStackTrace();
             return null;
         }
-    }
-
-    private static void uploadQRCodeImageToFirebaseStorage(final Context context, Bitmap bitmap, final FoodSetGet foodSetGet) {
-        // Create a reference to the QR code image
-        final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("qr_code_images").child(FirebaseAuth.getInstance().getUid()).child(uniqueID);
-
-        // Convert bitmap to byte array
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        byte[] data = baos.toByteArray();
-
-        // Upload the image
-        UploadTask uploadTask = storageReference.putBytes(data);
-        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // Image uploaded successfully
-                // Get the download URL for the uploaded image
-                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        // Store the download URL along with the data in Firebase Realtime Database
-                        String downloadUrl = uri.toString();
-                        storeDataInFirebaseDatabase(foodSetGet, downloadUrl);
-                    }
-                });
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // Handle errors during image upload
-                // Show error message
-                Toast.makeText(context, "Failed to upload QR code image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private static void storeDataInFirebaseDatabase(FoodSetGet foodSetGet, String qrCodeUrl) {
-        // Store the data along with the QR code URL in Firebase Realtime Database
-        DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
-                .child("Coupons")
-                .child(FirebaseAuth.getInstance().getUid())
-                .push(); // Generate a unique key for the coupon
-
-        couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
-        couponRef.child("Menu Time").setValue(OurTime.getOrderTime());
-        couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
-        couponRef.child("Status").setValue("pending");
-        couponRef.child("Reference Number").setValue(uniqueID);
-        couponRef.child("QR Code URL").setValue(qrCodeUrl);
     }
 }
