@@ -87,6 +87,8 @@ public class DashBoard extends AppCompatActivity {
     public static ProgressDialog progressDialog2;
     FoodAdapter adapter;
     public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
+    Button homeBtn,feedbackBtn,settingsBtn,profileBtn;
+    LinearLayout dashBoardlayout,settingsLayout,feedbackLayout,dashbordinsideLayout,profileLayout,myhistoryLayout,navigationLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,23 +121,23 @@ public class DashBoard extends AppCompatActivity {
         TextView viewBalanance = (TextView) findViewById(R.id.viewBalance);
         TextView accountBalance = (TextView) findViewById(R.id.accountBalance);
        hideBalance = viewBalanance.getText().toString();
-        Button homeBtn = (Button) findViewById(R.id.homeBtn);
-        Button feedbackBtn = (Button) findViewById(R.id.feedbackBtn);
-        Button settingsBtn = (Button) findViewById(R.id.settingsBtn);
-        Button profileBtn = (Button) findViewById(R.id.profileBtn);
-        LinearLayout dashBoardlayout = (LinearLayout) findViewById(R.id.dashBoardLayout);
-        LinearLayout settingsLayout = (LinearLayout) findViewById(R.id.settingsLayout);
-        LinearLayout feedbackLayout = (LinearLayout) findViewById(R.id.feedbackLayout);
-        LinearLayout dashbordinsideLayout = (LinearLayout) findViewById(R.id.dashbordInsideLayout);
-        LinearLayout profileLayout = (LinearLayout) findViewById(R.id.profileLayout);
+        homeBtn = (Button) findViewById(R.id.homeBtn);
+        feedbackBtn = (Button) findViewById(R.id.feedbackBtn);
+        settingsBtn = (Button) findViewById(R.id.settingsBtn);
+        profileBtn = (Button) findViewById(R.id.profileBtn);
+        dashBoardlayout = (LinearLayout) findViewById(R.id.dashBoardLayout);
+        settingsLayout = (LinearLayout) findViewById(R.id.settingsLayout);
+        feedbackLayout = (LinearLayout) findViewById(R.id.feedbackLayout);
+        dashbordinsideLayout = (LinearLayout) findViewById(R.id.dashbordInsideLayout);
+        profileLayout = (LinearLayout) findViewById(R.id.profileLayout);
         TextView viewBalanance1 = (TextView) findViewById(R.id.viewBalance1);
         TextView accountBalance1 = (TextView) findViewById(R.id.accountBalance1);
         user_Name.setText(fullName+"");
         user_Email.setText(user_email);
 
         user_Pno.setText(phonenumber);
-        LinearLayout myhistoryLayout = (LinearLayout) findViewById(R.id.myhistoryLayout);
-        LinearLayout navigationLayout = (LinearLayout) findViewById(R.id.navigationLayout);
+        myhistoryLayout = (LinearLayout) findViewById(R.id.myhistoryLayout);
+        navigationLayout = (LinearLayout) findViewById(R.id.navigationLayout);
 
         TextView backtoprofile = (TextView) findViewById(R.id.backtoprofiletv);
         ImageView topPic=findViewById(R.id.pp_topProfilePic);
@@ -213,49 +215,7 @@ public class DashBoard extends AppCompatActivity {
         historyView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set colors and backgrounds for buttons
-                settingsBtn.setTextColor(getResources().getColor(R.color.black));
-                settingsBtn.setBackgroundResource(R.color.white);
-                homeBtn.setTextColor(getResources().getColor(R.color.black));
-                homeBtn.setBackgroundResource(R.color.white);
-                profileBtn.setTextColor(getResources().getColor(R.color.white));
-                profileBtn.setBackgroundResource(R.drawable.time);
-                feedbackBtn.setTextColor(getResources().getColor(R.color.black));
-                feedbackBtn.setBackgroundResource(R.color.white);
-
-                // Hide other layouts and show the coupon history layout
-                dashbordinsideLayout.setVisibility(View.GONE);
-                settingsLayout.setVisibility(View.GONE);
-                feedbackLayout.setVisibility(View.GONE);
-                dashBoardlayout.setVisibility(View.GONE);
-                profileLayout.setVisibility(View.GONE);
-                myhistoryLayout.setVisibility(View.VISIBLE);
-                navigationLayout.setVisibility(View.GONE);
-
-                // Call the couponHistory method to populate the RecyclerView with coupon history
-                myHistoryRecyclerView =findViewById(R.id.recyclerviewHistory);
-                myHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(DashBoard.this));
-                couponHistory(getApplicationContext());
-                TextView totalSpent=findViewById(R.id.my_totalSpends);
-                TextView totalbalance=findViewById(R.id.mh_mybalance);
-                DatabaseReference userDb=FirebaseDatabase.getInstance().getReference().child("All Users")
-                        .child(FirebaseAuth.getInstance().getUid())
-                        .child("Details");
-                userDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String spent=snapshot.child("Used Amount").getValue(String.class);
-                        String balance=snapshot.child("Amount").getValue(String.class);
-                        totalSpent.setText(spent+".00");
-                        totalbalance.setText(balance+"");
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
+                viewHistoryAll();
 
             }
         });
@@ -1063,7 +1023,8 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         viewCouponbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-dialog.dismiss();
+            dialog.dismiss();
+            viewHistoryAll();
             }
         });
         depositbtn.setOnClickListener(new View.OnClickListener() {
@@ -1073,7 +1034,7 @@ dialog.dismiss();
 //                success.setVisibility(View.GONE);
 //                error.setVisibility(View.GONE);
                 dialog.dismiss();
-                depositDialogue();
+                viewHistoryAll();
 
             }
         });
@@ -1257,7 +1218,7 @@ dialog.dismiss();
                     String menuName = dataSnapshot.child("Menu Name").getValue(String.class);
                     String menuDate = dataSnapshot.child("Menu Time").getValue(String.class);
                     String menuPrice = dataSnapshot.child("Menu Price").getValue(String.class);
-                    String menuReference = dataSnapshot.child("Reference Number").getValue(String.class);
+                    String menuReference = dataSnapshot.getKey().toString();
                     String menuStatus = dataSnapshot.child("Status").getValue(String.class);
 
                     if (menuPrice !=null){
@@ -1322,6 +1283,51 @@ dialog.dismiss();
 
             }
         });
+    }
+    public void viewHistoryAll(){
+        // Set colors and backgrounds for buttons
+        settingsBtn.setTextColor(getResources().getColor(R.color.black));
+        settingsBtn.setBackgroundResource(R.color.white);
+        homeBtn.setTextColor(getResources().getColor(R.color.black));
+        homeBtn.setBackgroundResource(R.color.white);
+        profileBtn.setTextColor(getResources().getColor(R.color.white));
+        profileBtn.setBackgroundResource(R.drawable.time);
+        feedbackBtn.setTextColor(getResources().getColor(R.color.black));
+        feedbackBtn.setBackgroundResource(R.color.white);
+
+        // Hide other layouts and show the coupon history layout
+        dashbordinsideLayout.setVisibility(View.GONE);
+        settingsLayout.setVisibility(View.GONE);
+        feedbackLayout.setVisibility(View.GONE);
+        dashBoardlayout.setVisibility(View.GONE);
+        profileLayout.setVisibility(View.GONE);
+        myhistoryLayout.setVisibility(View.VISIBLE);
+        navigationLayout.setVisibility(View.GONE);
+
+        // Call the couponHistory method to populate the RecyclerView with coupon history
+        myHistoryRecyclerView =findViewById(R.id.recyclerviewHistory);
+        myHistoryRecyclerView.setLayoutManager(new LinearLayoutManager(DashBoard.this));
+        couponHistory(getApplicationContext());
+        TextView totalSpent=findViewById(R.id.my_totalSpends);
+        TextView totalbalance=findViewById(R.id.mh_mybalance);
+        DatabaseReference userDb=FirebaseDatabase.getInstance().getReference().child("All Users")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("Details");
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String spent=snapshot.child("Used Amount").getValue(String.class);
+                String balance=snapshot.child("Amount").getValue(String.class);
+                totalSpent.setText(spent+".00");
+                totalbalance.setText(balance+"");
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
 
