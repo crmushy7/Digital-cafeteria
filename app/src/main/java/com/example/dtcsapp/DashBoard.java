@@ -1220,6 +1220,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     String menuPrice = dataSnapshot.child("Menu Price").getValue(String.class);
                     String menuReference = dataSnapshot.getKey().toString();
                     String menuStatus = dataSnapshot.child("Status").getValue(String.class);
+                    String menuServetime = dataSnapshot.child("Served Time").getValue(String.class);
 
                     if (menuPrice !=null){
                         String[] amount=menuPrice.split(" ");
@@ -1227,7 +1228,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                         totalSpent=totalSpent+actualAmount;
                     }
 
-                    HistorySetGet historySetGet = new HistorySetGet(menuName, menuPrice, menuReference, menuDate,menuStatus);
+                    HistorySetGet historySetGet = new HistorySetGet(menuName, menuPrice, menuReference, menuDate,menuStatus,menuServetime);
                     historyList.add(historySetGet);
 
 

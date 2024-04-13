@@ -36,6 +36,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,27 +46,27 @@ public class coupon {
 
     public static void generateCoupon(Context context, FoodSetGet foodSetGet) {
         uniqueID=UniqueIDGenerator.generateUniqueID();
+        Calendar calendar = Calendar.getInstance();
+        String currentdate = DateFormat.getInstance().format(calendar.getTime());
         DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
                 .child("Coupons")
                 .child(FirebaseAuth.getInstance().getUid())
                 .push(); // Generate a unique key for the coupon
 
         couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
-        couponRef.child("Menu Time").setValue(OurTime.getOrderTime());
+        couponRef.child("Menu Time").setValue(currentdate+"Hrs");
         couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
         couponRef.child("Status").setValue("pending");
         couponRef.child("Reference Number").setValue(uniqueID);
+        couponRef.child("Served Time").setValue("Not served");
 
 
 
     }
     public static Bitmap generateQRCodeBitmap(HistorySetGet historySetGet) {
         // Construct data string for QR code
-        String data = "Menu Name: " + historySetGet.getFood_name() +
-                ", Menu Time: " + historySetGet.getCoupon_date() +
-                ", Menu Price: " + historySetGet.getFood_price() +
-                ", Status: pending" +
-                ", Reference Number: " + historySetGet.getCoupon_reference_Number();
+        String data =", Reference Number: " + historySetGet.getCoupon_reference_Number()+
+                ", UID: "+FirebaseAuth.getInstance().getUid();
 
         // Generate QR code bitmap
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
