@@ -1,7 +1,6 @@
 package com.example.dtcsapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,10 +14,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Interpolator;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -33,8 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -48,13 +41,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,6 +51,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 
 public class DashBoard extends AppCompatActivity {
     private List<FoodSetGet>foodList=new ArrayList<>();
@@ -82,6 +71,8 @@ public class DashBoard extends AppCompatActivity {
     public static String user_gender;
     public static String user_profilePic;
     public static String user_dob;
+    public static int KIASI_MALIPO=0;
+    public static int NAMBA_MALIPO=0;
     Handler handler;
     ProgressDialog progressDialog;
     public static ProgressDialog progressDialog2;
@@ -157,7 +148,7 @@ public class DashBoard extends AppCompatActivity {
         });
         handler.post(() -> {
             progressDialog2 = new ProgressDialog(DashBoard.this);
-            progressDialog2.setMessage("ttttttttt, Please wait...Make sure you have a stable internet connection!");
+            progressDialog2.setMessage("Loading, Please wait...Make sure you have a stable internet connection!");
             progressDialog2.setCancelable(false);
         });
 
@@ -926,11 +917,12 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     int availableAmount=Integer.parseInt(amount[0]);
                     int food_price=Integer.parseInt(foodp[0]);
                     if (availableAmount >= food_price){
+                        progressDialog2.show();
                         handler.post(() -> {
                             progressDialog = new ProgressDialog(DashBoard.this);
                             progressDialog.setMessage("Loading, Please wait.....Make sure you have a stable internet connection!");
                             progressDialog.setCancelable(false);
-                            progressDialog.show();
+//                            progressDialog.show();
                         });
                         int salioFinal=availableAmount-food_price;
 
@@ -938,7 +930,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                         handler.postDelayed(new Runnable() {
                             @Override
                             public void run() {
-                                progressDialog.dismiss();
+                                progressDialog2.dismiss();
                                 Toast.makeText(DashBoard.this, "please Check your internet connection", Toast.LENGTH_SHORT).show();
                             }
                         },10000);
@@ -976,7 +968,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                                     alertmessageSucces.setText(foodSetGet.getFoodPrice()+" deducted from your account");
 
 
-                                                    progressDialog.dismiss();
+
                                                     userBalance=salioFinal+"";
                                                 }
                                             }).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -1025,6 +1017,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             dialog.dismiss();
             viewHistoryAll();
+
             }
         });
         depositbtn.setOnClickListener(new View.OnClickListener() {
@@ -1110,7 +1103,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         proceedtoDeposit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Deposit dpo = new Deposit(getApplicationContext());
+
                 String number=mobileNumber.getText().toString();
                 String kiasi=amount.getText().toString();
                 if (number.isEmpty()){
@@ -1125,35 +1118,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     if (finalAmount<1000){
                         amount.setError("amount must start from 1000");
                     }else {
+                        KIASI_MALIPO=finalAmount;
+                        NAMBA_MALIPO=finalNumber;
                         progressDialog2.show();
-                        dpo.nambaKiasi(number, kiasi);
-                        dpo.execute();
+                        PataSession pataSession=new PataSession();
+                        pataSession.execute();
 
 
-                        thread=new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                while(Deposit.FINALRESP.isEmpty()){
-
-                                }
-
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(!Deposit.FINALRESP.isEmpty()){
-                                            progressDialog2.dismiss();
-                                            Toast.makeText(DashBoard.this,Deposit.FINALRESP+"", Toast.LENGTH_LONG).show();
-                                            Deposit.FINALRESP = "";
-                                            threadDestroy();
-                                            Toast.makeText(DashBoard.this,Deposit.FINALRESP+"       bbbbbb", Toast.LENGTH_LONG).show();
-
-
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                        thread.start();
 
 
 
@@ -1221,6 +1192,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     String menuReference = dataSnapshot.getKey().toString();
                     String menuStatus = dataSnapshot.child("Status").getValue(String.class);
                     String menuServetime = dataSnapshot.child("Served Time").getValue(String.class);
+                    String couponNumber = dataSnapshot.child("Coupon Number").getValue(String.class);
 
                     if (menuPrice !=null){
                         String[] amount=menuPrice.split(" ");
@@ -1228,7 +1200,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                         totalSpent=totalSpent+actualAmount;
                     }
 
-                    HistorySetGet historySetGet = new HistorySetGet(menuName, menuPrice, menuReference, menuDate,menuStatus,menuServetime);
+                    HistorySetGet historySetGet = new HistorySetGet(menuName, menuPrice, menuReference, menuDate,menuStatus,menuServetime,couponNumber);
                     historyList.add(historySetGet);
 
 

@@ -20,11 +20,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dtcsapp.FoodSetGet;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -43,22 +48,95 @@ import java.util.Map;
 
 public class coupon {
     public static String uniqueID="";
+    public static String couponNumber="";
 
     public static void generateCoupon(Context context, FoodSetGet foodSetGet) {
         uniqueID=UniqueIDGenerator.generateUniqueID();
         Calendar calendar = Calendar.getInstance();
         String currentdate = DateFormat.getInstance().format(calendar.getTime());
-        DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
-                .child("Coupons")
-                .child(FirebaseAuth.getInstance().getUid())
-                .push(); // Generate a unique key for the coupon
+        String[] dateSeparation=currentdate.split(" ");
+        String dateOnlyFull=dateSeparation[0]+"";
+        String[] tarehe=dateOnlyFull.split("/");
+        String dateOnly=tarehe[0]+"-"+tarehe[1]+"-"+tarehe[2];
 
-        couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
-        couponRef.child("Menu Time").setValue(currentdate+"Hrs");
-        couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
-        couponRef.child("Status").setValue("pending");
-        couponRef.child("Reference Number").setValue(uniqueID);
-        couponRef.child("Served Time").setValue("Not served");
+        DatabaseReference couponNumberRef = FirebaseDatabase.getInstance().getReference()
+                .child("Coupons Used")
+                .child(dateOnly);
+        couponNumberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String usedtoday=snapshot.child("Used Today").getValue(String.class);
+                String usedtotal=snapshot.child("Used Total").getValue(String.class);
+                if (snapshot.exists()) {
+                        if (usedtoday==null){
+                            couponNumberRef.child("Used Today").setValue("1 sold");
+                            couponNumberRef.child("Used Total").setValue("1 sold");
+                            couponNumber="1";
+                        }else{
+                            String[] usedtodayString=usedtoday.split(" ");
+                            String[] usedtotalString=usedtotal.split(" ");
+                            int newCount_today=Integer.parseInt(usedtodayString[0])+1;
+                            int newCount_total=Integer.parseInt(usedtotalString[0])+1;
+                            couponNumber=newCount_today+"";
+                            couponNumberRef.child("Used Today").setValue(newCount_today+" sold");
+                            couponNumberRef.child("Used Total").setValue(newCount_total+" sold").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
+                                            .child("Coupons")
+                                            .child(FirebaseAuth.getInstance().getUid())
+                                            .push(); // Generate a unique key for the coupon
+
+                                    couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
+                                    couponRef.child("Menu Time").setValue(currentdate+"Hrs");
+                                    couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
+                                    couponRef.child("Status").setValue("pending");
+                                    couponRef.child("Reference Number").setValue(uniqueID);
+                                    couponRef.child("Served Time").setValue("Not served");
+                                    couponRef.child("Coupon Number").setValue(couponNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            DashBoard.progressDialog2.dismiss();
+                                        }
+                                    });
+                                }
+                            });
+
+                        }
+
+
+
+                }else{
+
+                    couponNumberRef.child("Used Today").setValue("1 sold");
+                    couponNumberRef.child("Used Total").setValue("1 sold");
+                    couponNumber="1";
+                    DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
+                            .child("Coupons")
+                            .child(FirebaseAuth.getInstance().getUid())
+                            .push(); // Generate a unique key for the coupon
+
+                    couponRef.child("Menu Name").setValue(foodSetGet.getFoodName());
+                    couponRef.child("Menu Time").setValue(currentdate+"Hrs");
+                    couponRef.child("Menu Price").setValue(foodSetGet.getFoodPrice());
+                    couponRef.child("Status").setValue("pending");
+                    couponRef.child("Reference Number").setValue(uniqueID);
+                    couponRef.child("Served Time").setValue("Not served");
+                    couponRef.child("Coupon Number").setValue(couponNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            DashBoard.progressDialog2.dismiss();
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
 
 

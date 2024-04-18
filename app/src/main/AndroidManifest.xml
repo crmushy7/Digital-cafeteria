@@ -17,6 +17,9 @@
         android:theme="@style/Theme.dtcsapp"
         tools:targetApi="31">
         <activity
+            android:name="Malipo.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".Registration"
             android:exported="true">
             <intent-filter>
@@ -45,7 +48,7 @@
             android:name=".DashBoard"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Base.Theme.dtcsapp"/>
+            android:theme="@style/Base.Theme.dtcsapp" />
         <activity
             android:name=".login"
             android:exported="false"
