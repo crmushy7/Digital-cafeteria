@@ -79,6 +79,8 @@ public class DashBoard extends AppCompatActivity {
     Handler handler;
     ProgressDialog progressDialog;
     public static ProgressDialog progressDialog2;
+    public static AlertDialog customDialogue;
+    public static String customString="null";
     FoodAdapter adapter;
     public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
     Button homeBtn,feedbackBtn,settingsBtn,profileBtn;
@@ -93,6 +95,12 @@ public class DashBoard extends AppCompatActivity {
         OurTime.init(getApplicationContext());
         UserDetails.init(getApplicationContext());
         refresh();
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(DashBoard.this);
+//        View popupView = LayoutInflater.from(DashBoard.this).inflate(R.layout.coupon_with_qrcode, null);
+//        builder.setView(popupView);
+        builder.setMessage(customString);
+        customDialogue=builder.create();
         user_email=UserDetails.getEmail();
         user_dob=UserDetails.getDob();
         user_gender=UserDetails.getGender();
@@ -667,6 +675,15 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
     }
 
 
+    public static void newToast(String response){
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(DashBoard.myContext, "Your message", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        Toast.makeText(myContext, response+"", Toast.LENGTH_SHORT).show();
+    }
     private void updateUser(String updateType){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
@@ -1103,9 +1120,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                 } else if (kiasi.isEmpty()) {
                     amount.setError("Required");
                 }else{
-                    String kiasikipya=kiasi.substring(1);
-                    int finalAmount = Integer.parseInt(kiasikipya);
-                    int finalNumber=Integer.parseInt(number);
+                    String nambampya=number.substring(1);
+                    int finalAmount = Integer.parseInt(kiasi);
+                    int finalNumber=Integer.parseInt(nambampya);
                     if (finalAmount<1000){
                         amount.setError("amount must start from 1000");
                     }else {

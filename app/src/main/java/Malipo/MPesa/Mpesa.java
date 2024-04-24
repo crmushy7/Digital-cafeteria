@@ -3,6 +3,7 @@ package Malipo.MPesa;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,8 +29,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import android.os.Handler;
 
 public class Mpesa {
+    Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private static final String GET_SESSION_URL = "https://staffgenie.co.tz/moja/mpesa/getSession.php";
     private static final String MAKE_PAYMENT_URL = "https://staffgenie.co.tz/moja/mpesa/makePayment.php";
@@ -134,17 +142,29 @@ public class Mpesa {
                                         }
                                     });
                                 }else{
-
+                                    Toast.makeText(DashBoard.myContext, "User does not exist "+"", Toast.LENGTH_SHORT).show();
+                                    DashBoard.progressDialog2.dismiss();
                                 }
                             }
 
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
                                 // Handle error
+                                Toast.makeText(DashBoard.myContext, "failed due to "+error+"", Toast.LENGTH_SHORT).show();
+                                DashBoard.progressDialog2.dismiss();
                             }
                         });
                     }else {
-                        Toast.makeText(DashBoard.myContext, "", Toast.LENGTH_SHORT).show();
+                        mainHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Log.d("response",responseDesc+"");
+                                Toast.makeText(DashBoard.myContext, "Transaction failed due to "+responseDesc+"", Toast.LENGTH_LONG).show();
+                                DashBoard.progressDialog2.dismiss();
+                            }
+                        });
+
+//                        DashBoard.newToast(response+"");
                     }
 
                     // Parse and handle payment response here
@@ -154,6 +174,7 @@ public class Mpesa {
             }
         }).start();
     }
+
 
     // Method to extract JSON part of the response
     private String extractJsonFromResponse(String fullResponse) {
