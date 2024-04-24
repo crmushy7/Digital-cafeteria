@@ -57,7 +57,10 @@ public class coupon {
         String[] dateSeparation=currentdate.split(" ");
         String dateOnlyFull=dateSeparation[0]+"";
         String[] tarehe=dateOnlyFull.split("/");
-        String dateOnly=tarehe[0]+"-"+tarehe[1]+"-"+tarehe[2];
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH) + 1; // Adding 1 because January is represented as 0
+        int year = calendar.get(Calendar.YEAR);
+        String dateOnly=day+"-"+month+"-"+year;
 
         DatabaseReference couponNumberRef = FirebaseDatabase.getInstance().getReference()
                 .child("Coupons Used")

@@ -52,6 +52,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import Malipo.MPesa.Mpesa;
+import Malipo.MPesa.PataSession;
+
 
 public class DashBoard extends AppCompatActivity {
     private List<FoodSetGet>foodList=new ArrayList<>();
@@ -79,11 +82,14 @@ public class DashBoard extends AppCompatActivity {
     FoodAdapter adapter;
     public static TextView user_Name,user_Pno,ppUsername,ppUsertopphone,ppUserFname,ppUsersmallphone,ppUserLname;
     Button homeBtn,feedbackBtn,settingsBtn,profileBtn;
+//    public static SharedPreferences sharedPreferences1=getSharedPreferences("User_data",MODE_PRIVATE);
+    public static Context myContext;
     LinearLayout dashBoardlayout,settingsLayout,feedbackLayout,dashbordinsideLayout,profileLayout,myhistoryLayout,navigationLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
+        myContext=DashBoard.this;
         OurTime.init(getApplicationContext());
         UserDetails.init(getApplicationContext());
         refresh();
@@ -512,25 +518,6 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     adapter.notifyDataSetChanged();
                     break;
 
-                case "Ngano":
-                    breakfast.setBackgroundResource(R.drawable.viewbalance);
-                    breakfast.setTextColor(getResources().getColor(R.color.black));
-                    lunch.setBackgroundResource(R.drawable.viewbalance);
-                    lunch.setTextColor(getResources().getColor(R.color.black));
-                    dinner.setBackgroundResource(R.drawable.viewbalance);
-                    dinner.setTextColor(getResources().getColor(R.color.black));
-                    futari.setBackgroundResource(R.drawable.foodback);
-                    futari.setTextColor(getResources().getColor(R.color.white));
-                    foodList.clear();
-                    for(int i=0;i<8;i++)
-                    {
-                        FoodSetGet foodSetGet=new FoodSetGet("4000 TZS", "Futari","VIP","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBaEOHVxwDVet8ymvqyQMULIHvrUnRdagRjA&usqp=CAU");
-                        foodList.add(foodSetGet);
-                    }
-                    adapter.updateData(foodList);
-                    Collections.reverse(foodList);
-                    adapter.notifyDataSetChanged();
-                    break;
 
                 default:
                     break;
@@ -927,13 +914,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                         int salioFinal=availableAmount-food_price;
 
 
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                progressDialog2.dismiss();
-                                Toast.makeText(DashBoard.this, "please Check your internet connection", Toast.LENGTH_SHORT).show();
-                            }
-                        },10000);
+//                        handler.postDelayed(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                progressDialog2.dismiss();
+//                                Toast.makeText(DashBoard.this, "please Check your internet connection", Toast.LENGTH_SHORT).show();
+//                            }
+//                        },10000);
 
 
                         handler.postDelayed(new Runnable() {
@@ -1027,7 +1014,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
 //                success.setVisibility(View.GONE);
 //                error.setVisibility(View.GONE);
                 dialog.dismiss();
-                viewHistoryAll();
+                depositDialogue();
 
             }
         });
@@ -1059,12 +1046,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         airtel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                choosemethod.setVisibility(View.GONE);
-                choosenMethod.setVisibility(View.VISIBLE);
-                depTitle.setText("Deposit via Airtel Money");
-                Glide.with(DashBoard.this)
-                        .load(R.drawable.airtelmoney)
-                        .into(imageView);
+//                choosemethod.setVisibility(View.GONE);
+//                choosenMethod.setVisibility(View.VISIBLE);
+//                depTitle.setText("Deposit via Airtel Money");
+//                Glide.with(DashBoard.this)
+//                        .load(R.drawable.airtelmoney)
+//                        .into(imageView);
+                Toast.makeText(DashBoard.this, "Coming soon, please use vodacom to deposit", Toast.LENGTH_LONG).show();
             }
         });
         vodacom.setOnClickListener(new View.OnClickListener() {
@@ -1081,23 +1069,25 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         halotel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                choosemethod.setVisibility(View.GONE);
-                choosenMethod.setVisibility(View.VISIBLE);
-                depTitle.setText("Deposit via Halopesa");
-                Glide.with(DashBoard.this)
-                        .load(R.drawable.halopesa)
-                        .into(imageView);
+//                choosemethod.setVisibility(View.GONE);
+//                choosenMethod.setVisibility(View.VISIBLE);
+//                depTitle.setText("Deposit via Halopesa");
+//                Glide.with(DashBoard.this)
+//                        .load(R.drawable.halopesa)
+//                        .into(imageView);
+                Toast.makeText(DashBoard.this, "Coming soon, please use vodacom to deposit", Toast.LENGTH_LONG).show();
             }
         });
         tigo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                choosemethod.setVisibility(View.GONE);
-                choosenMethod.setVisibility(View.VISIBLE);
-                depTitle.setText("Deposit via Tigo Pesa");
-                Glide.with(DashBoard.this)
-                        .load(R.drawable.tigopesa)
-                        .into(imageView);
+//                choosemethod.setVisibility(View.GONE);
+//                choosenMethod.setVisibility(View.VISIBLE);
+//                depTitle.setText("Deposit via Tigo Pesa");
+//                Glide.with(DashBoard.this)
+//                        .load(R.drawable.tigopesa)
+//                        .into(imageView);
+                Toast.makeText(DashBoard.this, "Coming soon, please use vodacom to deposit", Toast.LENGTH_LONG).show();
             }
         });
         proceedtoDeposit.setOnClickListener(new View.OnClickListener() {
@@ -1108,12 +1098,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                 String kiasi=amount.getText().toString();
                 if (number.isEmpty()){
                     mobileNumber.setError("Required");
-                } else if (number.length()<9) {
+                } else if (number.length()<10) {
                     mobileNumber.setError("Must be 10 numbers");
                 } else if (kiasi.isEmpty()) {
                     amount.setError("Required");
                 }else{
-                    int finalAmount = Integer.parseInt(kiasi);
+                    String kiasikipya=kiasi.substring(1);
+                    int finalAmount = Integer.parseInt(kiasikipya);
                     int finalNumber=Integer.parseInt(number);
                     if (finalAmount<1000){
                         amount.setError("amount must start from 1000");
@@ -1121,8 +1112,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                         KIASI_MALIPO=finalAmount;
                         NAMBA_MALIPO=finalNumber;
                         progressDialog2.show();
-                        PataSession pataSession=new PataSession();
-                        pataSession.execute();
+                        Mpesa mpesa=new Mpesa();
+                        mpesa.getSession();
+                        dialog.dismiss();
 
 
 
@@ -1302,6 +1294,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         });
 
     }
+
 
 
 }

@@ -1,18 +1,21 @@
-package com.example.dtcsapp;
+package Malipo.MPesa;
 
 import android.os.AsyncTask;
 
+import mu.prevoir.sdkhttp.APIResponse;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import mu.prevoir.sdkhttp.APIContext;
 import mu.prevoir.sdkhttp.APIMethodType;
 import mu.prevoir.sdkhttp.APIRequest;
 import mu.prevoir.sdkhttp.APIResponse;
-import com.example.dtcsapp.ItaMpesa;
-
 
 public class PataSession extends AsyncTask<Void, Void, APIResponse> {
 
@@ -62,11 +65,11 @@ public class PataSession extends AsyncTask<Void, Void, APIResponse> {
 
         // Display results of session generated and check if imefanikiwa
         // can start the second  request ya mobile system
-        if (response != null && response.getStatusCode() == 200) {
+        if(response != null && response.getStatusCode() == 200) {
             System.out.println(response.getStatusCode() + " - " + response.getReason());
             System.out.println(response.getResult());
 
-            for (Map.Entry<String, String> entry : response.getBody().entrySet()) {
+            for(Map.Entry<String, String> entry: response.getBody().entrySet()){
                 System.out.println(entry.getKey() + ":" + response.getBody().get(entry.getKey()));
             }
         } else {
