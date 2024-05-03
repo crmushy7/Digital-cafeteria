@@ -2,6 +2,7 @@ package com.example.dtcsapp;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -31,7 +32,7 @@ public class UserDetails {
     private static String gender;
     private static String profilePic;
     private static String FCM_Token;
-    private static String amount;
+    public static String amount;
     public static void init(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         fullName = sharedPreferences.getString(KEY_FULL_NAME, null);
@@ -47,10 +48,15 @@ public class UserDetails {
         DatabaseReference userRef= FirebaseDatabase.getInstance().getReference().child("All Users")
                 .child(FirebaseAuth.getInstance().getUid().toString())
                 .child("Details");
-        userRef.addValueEventListener(new ValueEventListener() {
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                amount=snapshot.child("Amount").getValue(String.class);
+                String salio=snapshot.child("Amount").getValue(String.class);
+                SharedPreferences sharedPreferences= context.getSharedPreferences("User_data", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor= sharedPreferences.edit();
+                editor.putString("Amount",salio+"");
+                editor.apply();
+                amount=salio;
             }
 
             @Override

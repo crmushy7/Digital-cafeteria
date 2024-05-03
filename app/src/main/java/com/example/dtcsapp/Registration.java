@@ -409,7 +409,7 @@ public class Registration extends AppCompatActivity {
                     hashMap.put("Gender",userGender);
                     hashMap.put("Date_of_Birth",user_dob);
                     hashMap.put("Password",userPassword);
-                    hashMap.put("Amount","0.00 TZs");
+                    hashMap.put("Amount","0 TZs");
 
                     handler.post(() -> {
                         progressDialog = new ProgressDialog(Registration.this);

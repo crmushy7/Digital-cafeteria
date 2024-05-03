@@ -465,6 +465,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         viewBalanance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserDetails.init(getApplicationContext());
                 if(hideBalance =="View Balance") {
                     if (userBalance == null){
                         accountBalance.setText("waiting for connection!");
@@ -515,8 +516,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
                                 String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                                String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                                 foodList.add(foodSetGet);
                             }
                             adapter.updateData(foodList);
@@ -551,8 +553,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
                                 String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                                String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                                 foodList.add(foodSetGet);
                             }
                             adapter.updateData(foodList);
@@ -588,8 +591,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
                                 String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                                String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                                FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                                 foodList.add(foodSetGet);
                             }
                             adapter.updateData(foodList);
@@ -615,6 +619,10 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         adapter.setOnItemClickListener(new FoodAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, FoodSetGet foodSetGet) {
+                if (foodSetGet.getMenuAvailability().equals("Not Available")){
+                    Toast.makeText(DashBoard.this, foodSetGet.getFoodName()+" not available", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 alertdialogBuilder(foodSetGet);
             }
         });
@@ -644,8 +652,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
                            String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                           String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                            foodList.add(foodSetGet);
                        }
                        adapter.updateData(foodList);
@@ -684,8 +693,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
                            String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                           String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                            foodList.add(foodSetGet);
                        }
                        adapter.updateData(foodList);
@@ -724,8 +734,9 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
                            String menuUrl = dataSnapshot.child("menuImage").getValue(String.class);
+                           String menuAvailability = dataSnapshot.child("statusMode").getValue(String.class);
 
-                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl);
+                           FoodSetGet foodSetGet=new FoodSetGet(menuPrice+" TZS", menuName,"VIP",menuUrl,menuAvailability);
                            foodList.add(foodSetGet);
                        }
                        adapter.updateData(foodList);
