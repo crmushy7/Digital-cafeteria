@@ -619,7 +619,8 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         adapter.setOnItemClickListener(new FoodAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, FoodSetGet foodSetGet) {
-                if (foodSetGet.getMenuAvailability().equals("Not Available")){
+                String text=foodSetGet.getMenuAvailability()+"";
+                if (text.equals("Not Available")){
                     Toast.makeText(DashBoard.this, foodSetGet.getFoodName()+" not available", Toast.LENGTH_SHORT).show();
                     return;
                 }

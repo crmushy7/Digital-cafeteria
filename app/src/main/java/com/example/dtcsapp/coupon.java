@@ -62,7 +62,7 @@ public class coupon {
         int year = calendar.get(Calendar.YEAR);
         String dateOnly=day+"-"+month+"-"+year;
 
-        DatabaseReference couponNumberRef = FirebaseDatabase.getInstance().getReference()
+        DatabaseReference couponNumberRef = FirebaseDatabase.getInstance().getReference().child("Coupons")
                 .child("Coupons Used")
                 .child(dateOnly);
         couponNumberRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -99,7 +99,30 @@ public class coupon {
                                     couponRef.child("Coupon Number").setValue(couponNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            DashBoard.progressDialog2.dismiss();
+                                            DatabaseReference soldNumberRef = FirebaseDatabase.getInstance().getReference().child("Coupons")
+                                                    .child("Coupons Used")
+                                                    .child(dateOnly).child(foodSetGet.getFoodName());
+                                            soldNumberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                    if(snapshot.exists()){
+                                                        String usedtoday1=snapshot.getValue(String.class);
+                                                        String[] usedtodayString1=usedtoday1.split(" ");
+                                                        int newCount_today1=Integer.parseInt(usedtodayString1[0])+1;
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold");
+                                                        DashBoard.progressDialog2.dismiss();
+                                                    }else{
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 sold");
+                                                        DashBoard.progressDialog2.dismiss();
+                                                    }
+                                                }
+
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                }
+                                            });
+
                                         }
                                     });
                                 }
@@ -128,7 +151,29 @@ public class coupon {
                     couponRef.child("Coupon Number").setValue(couponNumber).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            DashBoard.progressDialog2.dismiss();
+                            DatabaseReference soldNumberRef = FirebaseDatabase.getInstance().getReference().child("Coupons")
+                                    .child("Coupons Used")
+                                    .child(dateOnly).child(foodSetGet.getFoodName());
+                            soldNumberRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        String usedtoday1=snapshot.getValue(String.class);
+                                        String[] usedtodayString1=usedtoday1.split(" ");
+                                        int newCount_today1=Integer.parseInt(usedtodayString1[0])+1;
+                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold");
+                                        DashBoard.progressDialog2.dismiss();
+                                    }else{
+                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 sold");
+                                        DashBoard.progressDialog2.dismiss();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
                         }
                     });
                 }

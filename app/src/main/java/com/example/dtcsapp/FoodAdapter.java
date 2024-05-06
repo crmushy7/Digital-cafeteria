@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -78,6 +79,7 @@ public class FoodAdapter  extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             private TextView food_price;
             private TextView food_status;
             private ImageView foodPic;
+            private LinearLayout layout;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -85,12 +87,19 @@ public class FoodAdapter  extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
                 food_price = itemView.findViewById(R.id.fc_foodPrice);
                 food_status = itemView.findViewById(R.id.fc_foodStatus);
                 foodPic=itemView.findViewById(R.id.fc_foodImage);
+                layout=itemView.findViewById(R.id.ll_foodcard);
             }
 
             public void bind(FoodSetGet foodSetGet) {
+                String text=foodSetGet.getMenuAvailability()+"";
                 food_name.setText(foodSetGet.getFoodName());
                 food_price.setText(foodSetGet.getFoodPrice());
                 food_status.setText(foodSetGet.getFoodStatus());
+                if (text.equals("Not Available")){
+                    layout.setVisibility(View.VISIBLE);
+                }else {
+                    layout.setVisibility(View.GONE);
+                }
 
 
                 Glide.with(itemView.getContext())
