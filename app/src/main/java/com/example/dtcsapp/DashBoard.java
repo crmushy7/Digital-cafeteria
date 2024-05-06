@@ -512,6 +512,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     breakfastRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            foodList.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -620,11 +621,13 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onItemClick(int position, FoodSetGet foodSetGet) {
                 String text=foodSetGet.getMenuAvailability()+"";
-                if (text.equals("Not Available")){
+                if (text.equals("Available")){
+                    alertdialogBuilder(foodSetGet);
+                }else{
                     Toast.makeText(DashBoard.this, foodSetGet.getFoodName()+" not available", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                alertdialogBuilder(foodSetGet);
+
             }
         });
        breakfast.setOnClickListener(new View.OnClickListener() {

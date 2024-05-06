@@ -95,10 +95,10 @@ public class FoodAdapter  extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
                 food_name.setText(foodSetGet.getFoodName());
                 food_price.setText(foodSetGet.getFoodPrice());
                 food_status.setText(foodSetGet.getFoodStatus());
-                if (text.equals("Not Available")){
-                    layout.setVisibility(View.VISIBLE);
-                }else {
+                if (text.equals("Available")){
                     layout.setVisibility(View.GONE);
+                }else {
+                    layout.setVisibility(View.VISIBLE);
                 }
 
 
