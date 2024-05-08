@@ -217,14 +217,23 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu Category"
-            android:layout_marginTop="15sp"
-            android:textSize="17sp"
             android:layout_weight="1"
-            android:textColor="@color/black"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/searchbar"
+                android:layout_width="150sp"
+                android:layout_height="40sp"
+                android:drawableRight="@drawable/search_icon"
+                android:drawablePadding="10sp"
+                android:textColor="@color/black"
+                android:paddingRight="8sp"
+                android:paddingLeft="8sp"
+                android:hint="search"
+                android:background="@drawable/card_bg_withborder"/>
+        </LinearLayout>
             />
         <LinearLayout
             android:layout_width="100sp"
@@ -542,6 +551,10 @@
                     android:layout_marginTop="40sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_notification"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -552,15 +565,16 @@
 
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/notificationicon"
 
 
                         />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableRight="@drawable/toggleon"
-                        />
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textOn="ON"
+                        android:textOff="OFF"
+                        android:layout_gravity="end"
+                        android:checked="false"/>
 
                 </LinearLayout>
                 <LinearLayout
@@ -570,6 +584,10 @@
                     android:layout_marginTop="40sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_save_history"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -580,7 +598,6 @@
                         android:textColor="@color/black"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/savelocal"
                         />
                     <TextView
                         android:layout_width="match_parent"
@@ -595,6 +612,10 @@
                     android:layout_marginTop="40sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_confirmation_by_pin"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -605,7 +626,6 @@
 
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/pinconfirmation"
                         />
                     <TextView
                         android:layout_width="match_parent"
@@ -620,6 +640,10 @@
                     android:layout_marginTop="40sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_app_info"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -629,7 +653,6 @@
                         android:textSize="20sp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/appinfo"
                         />
 
 
@@ -642,6 +665,10 @@
                     android:layout_marginTop="40sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_deposit"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -651,7 +678,6 @@
                         android:textSize="20sp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/appinfo"
                         />
 
 
@@ -665,6 +691,10 @@
                     android:layout_marginBottom="120sp"
                     >
 
+                    <ImageView
+                        android:layout_width="50sp"
+                        android:layout_height="50sp"
+                        android:src="@drawable/new_logout"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -674,7 +704,6 @@
                         android:textSize="20sp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:drawableLeft="@drawable/appinfo"
                         />
 
 

@@ -17,6 +17,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +90,7 @@ public class DashBoard extends AppCompatActivity {
     Button homeBtn,feedbackBtn,settingsBtn,profileBtn;
 //    public static SharedPreferences sharedPreferences1=getSharedPreferences("User_data",MODE_PRIVATE);
     public static Context myContext;
+    EditText searchEditText;
     LinearLayout dashBoardlayout,settingsLayout,feedbackLayout,dashbordinsideLayout,profileLayout,myhistoryLayout,navigationLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,6 +163,27 @@ public class DashBoard extends AppCompatActivity {
         ppUsersmallphone=findViewById(R.id.pp_userNewPhone);
         TextView ppUsersmallemail=findViewById(R.id.pp_userNewEmail);
         TextView ppUserdob=findViewById(R.id.pp_userDOB);
+
+        searchEditText = findViewById(R.id.searchbar);
+
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // This method is called before the text is changed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // This method is called when the text is changed
+                String query = s.toString().trim();
+                searchMenu(query);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // This method is called after the text is changed
+            }
+        });
 
         EditText feedb=findViewById(R.id.feedback_et);
         Button submtfdbck=findViewById(R.id.submitfeedback);
@@ -382,6 +406,8 @@ profileBtn.setOnClickListener(new View.OnClickListener() {
         viewBalanance1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                UserDetails.init(getApplicationContext());
+                Toast.makeText(DashBoard.this, UserDetails.getAmount()+"", Toast.LENGTH_SHORT).show();
                 if(hideBalance =="View Balance") {
                     accountBalance1.setText("waiting for connection!");
                     if (userBalance == null){
@@ -416,13 +442,13 @@ profileBtn.setOnClickListener(new View.OnClickListener() {
         update_fname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser("Fullname");
+                updateUser("Firstname");
             }
         });
         update_lname.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateUser("Fullname");
+                updateUser("Lastname");
             }
         });
         update_phone.setOnClickListener(new View.OnClickListener() {
@@ -550,6 +576,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     lunchref.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            foodList.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -588,6 +615,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     dinnerRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            foodList.clear();
                             for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                                 String menuPrice = dataSnapshot.child("price").getValue(String.class);
                                 String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -625,7 +653,6 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     alertdialogBuilder(foodSetGet);
                 }else{
                     Toast.makeText(DashBoard.this, foodSetGet.getFoodName()+" not available", Toast.LENGTH_SHORT).show();
-                    return;
                 }
 
             }
@@ -652,6 +679,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                breakfastRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                       foodList.clear();
                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -693,6 +721,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                breakfastRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                       foodList.clear();
                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -734,6 +763,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                breakfastRef.addValueEventListener(new ValueEventListener() {
                    @Override
                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                       foodList.clear();
                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                            String menuPrice = dataSnapshot.child("price").getValue(String.class);
                            String menuName = dataSnapshot.child("foodName").getValue(String.class);
@@ -828,7 +858,16 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         builder.setView(popupView);
         dialog = builder.create();
         dialog.show();
-        if (updateType=="Fullname"){
+        if (updateType=="Firstname"){
+            nametv2.setVisibility(View.GONE);
+            name_et2.setVisibility(View.GONE);
+            numbertv.setVisibility(View.GONE);
+            number_et.setVisibility(View.GONE);
+            passwordtv.setVisibility(View.GONE);
+            password_et.setVisibility(View.GONE);
+        } else if (updateType.equals("Lastname")) {
+            nametv.setVisibility(View.GONE);
+            name_et.setVisibility(View.GONE);
             numbertv.setVisibility(View.GONE);
             number_et.setVisibility(View.GONE);
             passwordtv.setVisibility(View.GONE);
@@ -853,17 +892,24 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progressDialog.show();
-                if (updateType=="Fullname"){
+                if (updateType=="Firstname"){
                     String new_userName=name_et.getText().toString();
-                    String new_userName2=name_et2.getText().toString();
+
                     if (new_userName.isEmpty()){
                         progressDialog.dismiss();
                         name_et.setError("Fill this!");
-                    } else if (new_userName2.isEmpty()) {
+                    }else{
+                        String newName=new_userName;
+                        updateToFirebase(newName,updateType);
+                    }
+                } else if (updateType=="Lastname") {
+                    String new_userName=name_et2.getText().toString();
+
+                    if (new_userName.isEmpty()){
                         progressDialog.dismiss();
                         name_et2.setError("Fill this!");
-                    } else{
-                        String newName=new_userName+" "+new_userName2;
+                    }else{
+                        String newName=new_userName;
                         updateToFirebase(newName,updateType);
                     }
                 } else if (updateType=="Password") {
@@ -901,79 +947,125 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()){
-                    userRef.child(updateChild).setValue(newData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()){
-                                if (updateChild=="Password"){
+                    if (updateChild.equals("Firstname")||updateChild.equals("Lastname")){
+                        String userExistingName=UserDetails.getFullName();
+                        String[] specificN=userExistingName.split(" ");
+                        if (updateChild.equals("Firstname")){
+                            String newName=newData+" "+specificN[1];
+                            userRef.child("Fullname").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
 
+                                            SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
+                                            String amount=sharedPreferences.getString("full_name",null);
+                                            SharedPreferences.Editor editor= sharedPreferences.edit();
+                                            editor.putString("full_name",newName+"");
+                                            editor.apply();
+                                            UserDetails.init(getApplicationContext());
+                                            refresh();
+                                            Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                            progressDialog.dismiss();
+                                            dialog.dismiss();
 
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    AuthCredential credential = EmailAuthProvider.getCredential(UserDetails.getEmail(), UserDetails.getPassword());
-                                    user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()){
-                                                if (user !=null) {
-                                                    user.updatePassword(newData + "").addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            if (task.isSuccessful()) {
-                                                                Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
-                                                                SharedPreferences sharedPreferences=getSharedPreferences("User_data",MODE_PRIVATE);
-                                                                String amount=sharedPreferences.getString("password",null);
-                                                                SharedPreferences.Editor editor= sharedPreferences.edit();
-                                                                editor.putString("Password",newData+"");
-                                                                editor.apply();
-                                                                progressDialog.dismiss();
-                                                            }else{
-                                                                progressDialog.dismiss();
-                                                                Exception exception = task.getException();
-                                                                Log.d("TAG", "Error updating password"+exception);
+                                    }
+                                }
+                            });
+                        }else{
+                            String newName=specificN[0]+" "+newData;
+                            userRef.child("Fullname").setValue(newName).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+
+                                        SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
+                                        String amount=sharedPreferences.getString("full_name",null);
+                                        SharedPreferences.Editor editor= sharedPreferences.edit();
+                                        editor.putString("full_name",newName+"");
+                                        editor.apply();
+                                        UserDetails.init(getApplicationContext());
+                                        refresh();
+                                        Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                        progressDialog.dismiss();
+                                        dialog.dismiss();
+
+                                    }
+                                }
+                            });
+                        }
+                    }else {
+                        userRef.child(updateChild).setValue(newData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    if (updateChild == "Password") {
+                                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                        AuthCredential credential = EmailAuthProvider.getCredential(UserDetails.getEmail(), UserDetails.getPassword());
+                                        user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    if (user != null) {
+                                                        user.updatePassword(newData + "").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                                                    SharedPreferences sharedPreferences = getSharedPreferences("User_data", MODE_PRIVATE);
+                                                                    String amount = sharedPreferences.getString("password", null);
+                                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                                    editor.putString("Password", newData + "");
+                                                                    editor.apply();
+                                                                    progressDialog.dismiss();
+                                                                } else {
+                                                                    progressDialog.dismiss();
+                                                                    Exception exception = task.getException();
+                                                                    Log.d("TAG", "Error updating password" + exception);
+                                                                }
                                                             }
-                                                        }
-                                                    });
-                                                }else {
-                                                    Toast.makeText(DashBoard.this, "Try again", Toast.LENGTH_SHORT).show();
+                                                        });
+                                                    } else {
+                                                        Toast.makeText(DashBoard.this, "Try again", Toast.LENGTH_SHORT).show();
+                                                        progressDialog.dismiss();
+                                                    }
+                                                } else {
                                                     progressDialog.dismiss();
+                                                    Toast.makeText(DashBoard.this, "Password wrong", Toast.LENGTH_SHORT).show();
                                                 }
-                                            }else{
-                                                progressDialog.dismiss();
-                                                Toast.makeText(DashBoard.this, "Password wrong", Toast.LENGTH_SHORT).show();
                                             }
-                                        }
-                                    });
+                                        });
 
-                                }else if (updateChild=="Fullname"){
-                                    SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
-                                    String amount=sharedPreferences.getString("full_name",null);
-                                    SharedPreferences.Editor editor= sharedPreferences.edit();
-                                    editor.putString("full_name",newData+"");
-                                    editor.apply();
-                                    UserDetails.init(getApplicationContext());
-                                    refresh();
-                                    Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
-                                    progressDialog.dismiss();
-                                    dialog.dismiss();
-                                }else{
-                                    SharedPreferences sharedPreferences=getSharedPreferences("User_data",Context.MODE_PRIVATE);
-                                    SharedPreferences.Editor editor= sharedPreferences.edit();
-                                    editor.putString("phone_number",newData+"");
-                                    editor.apply();
-                                    UserDetails.init(getApplicationContext());
-                                    refresh();
-                                    Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
-                                    progressDialog.dismiss();
-                                    dialog.dismiss();
+                                    } else if (updateChild == "Fullname") {
+                                        SharedPreferences sharedPreferences = getSharedPreferences("User_data", Context.MODE_PRIVATE);
+                                        String amount = sharedPreferences.getString("full_name", null);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("full_name", newData + "");
+                                        editor.apply();
+                                        UserDetails.init(getApplicationContext());
+                                        refresh();
+                                        Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                        progressDialog.dismiss();
+                                        dialog.dismiss();
+                                    } else {
+                                        SharedPreferences sharedPreferences = getSharedPreferences("User_data", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                        editor.putString("phone_number", newData + "");
+                                        editor.apply();
+                                        UserDetails.init(getApplicationContext());
+                                        refresh();
+                                        Toast.makeText(DashBoard.this, "Updated successfully", Toast.LENGTH_LONG).show();
+                                        progressDialog.dismiss();
+                                        dialog.dismiss();
+                                    }
                                 }
                             }
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(DashBoard.this, "Update failed,please try again later", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(DashBoard.this, "Update failed,please try again later", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }else{
                     Toast.makeText(DashBoard.this, "Database error", Toast.LENGTH_SHORT).show();
                 }
@@ -1446,6 +1538,62 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
 
 
 
+    }
+
+    private void searchMenu(String query) {
+        DatabaseReference menuRef = FirebaseDatabase.getInstance().getReference().child("MENUS");
+
+        menuRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                foodList.clear();
+                boolean foundMatch = false;
+                for (DataSnapshot mealSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot menuItemSnapshot : mealSnapshot.getChildren()) {
+                        // Retrieve data from Firebase
+                        String menuName = menuItemSnapshot.child("foodName").getValue(String.class);
+                        String menuPrice = menuItemSnapshot.child("price").getValue(String.class);
+                        String menuImage = menuItemSnapshot.child("menuImage").getValue(String.class);
+                        String menuStatus = menuItemSnapshot.child("statusMode").getValue(String.class);
+                        String menuID = menuItemSnapshot.getKey();
+
+                        // Check if menu name matches the query
+                        if (menuName != null && menuName.toLowerCase().contains(query.toLowerCase())) {
+                            foundMatch = true;
+                            foodList.clear();
+                            FoodSetGet foodSetGet = new FoodSetGet(menuPrice + " TZS", menuName, "VIP", menuImage,menuStatus);
+                            foodList.add(foodSetGet);
+                        }
+                    }
+
+                }
+                    // Update RecyclerView with search results
+                    if (foodList.isEmpty()) {
+                        // No matching items found
+                        adapter.setClickable(false);
+                        foodList.clear();
+                        showNoMatchingItemsMessage();
+                        // Make adapter unclickable
+                    } else {
+                        adapter.updateData(foodList);
+                        Collections.reverse(foodList);
+                        adapter.setClickable(true); // Make adapter clickable
+                        adapter.notifyDataSetChanged();
+                    }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+    }
+    private void showNoMatchingItemsMessage() {
+
+//        recyclerView.setVisibility(View.GONE);
+        // Display a toast message indicating no matching items found
+        Toast.makeText(DashBoard.this, "Item does not exist!", Toast.LENGTH_SHORT).show();
     }
 
 
