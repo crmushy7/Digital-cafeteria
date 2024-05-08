@@ -407,7 +407,7 @@ profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserDetails.init(getApplicationContext());
-                Toast.makeText(DashBoard.this, UserDetails.getAmount()+"", Toast.LENGTH_SHORT).show();
+                userBalance=UserDetails.getAmount();
                 if(hideBalance =="View Balance") {
                     accountBalance1.setText("waiting for connection!");
                     if (userBalance == null){
@@ -492,6 +492,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserDetails.init(getApplicationContext());
+                userBalance=UserDetails.getAmount();
                 if(hideBalance =="View Balance") {
                     if (userBalance == null){
                         accountBalance.setText("waiting for connection!");

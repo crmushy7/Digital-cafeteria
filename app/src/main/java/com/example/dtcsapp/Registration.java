@@ -7,7 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -141,6 +141,20 @@ public class Registration extends AppCompatActivity {
         EditText loginEmail=findViewById(R.id.rp_signinEmail);
         EditText loginPass=findViewById(R.id.rp_signinPassword);
         TextView dateofBirth=findViewById(R.id.dobEt);
+        TextView forgotpass=findViewById(R.id.forgotpassword);
+
+        handler.post(() -> {
+            progressDialog = new ProgressDialog(Registration.this);
+            progressDialog.setMessage("Loading, Please wait...Make sure you have a stable internet connection!");
+            progressDialog.setCancelable(false);
+        });
+
+        forgotpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                passwordReset();
+            }
+        });
 
 
         reg_profile.setOnClickListener(new View.OnClickListener() {
@@ -731,6 +745,46 @@ public class Registration extends AppCompatActivity {
         }
         ;
 
+    }
+    private void passwordReset(){
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(Registration.this);
+        View popupView = LayoutInflater.from(Registration.this).inflate(R.layout.activity_resetpassword, null);
+
+        EditText email_et = popupView.findViewById(R.id.rp_userEmail);
+        Button proceedtoReset = popupView.findViewById(R.id.rp_resetButton);
+
+        proceedtoReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String my_email=email_et.getText().toString().trim();
+                if (my_email.isEmpty()){
+                    email_et.setError("Email required");
+                }else if (!pat.matcher(my_email).matches()) {
+                    email_et.setError("Invalid email!");
+                }else{
+                    progressDialog.show();
+                    FirebaseAuth.getInstance().sendPasswordResetEmail(my_email).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                progressDialog.dismiss();
+                                dialog.dismiss();
+                                Toast.makeText(Registration.this, "Reset email sent successful to "+my_email, Toast.LENGTH_SHORT).show();
+                            }else{
+                                progressDialog.dismiss();
+                                dialog.dismiss();
+                                Toast.makeText(Registration.this, "Error reseting, retry later", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        builder.setView(popupView);
+        dialog = builder.create();
+        dialog.show();
     }
 
 }
