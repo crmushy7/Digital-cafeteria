@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +44,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
@@ -104,6 +106,8 @@ public class Registration extends AppCompatActivity {
     private static final long TIME_INTERVAL = 2000;
     private long mBackPressed;
     ImageView reg_profile;
+    private EditText passwordEditText;
+    private ImageView eyeIcon;
     LinearLayout linearLayoutOne,linearLayoutTwo,linearLayoutThree,loginLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,10 +143,26 @@ public class Registration extends AppCompatActivity {
         EditText pass=findViewById(R.id.rp_password);
         EditText confPass=findViewById(R.id.rp_confirmPassword);
         EditText loginEmail=findViewById(R.id.rp_signinEmail);
-        EditText loginPass=findViewById(R.id.rp_signinPassword);
+        passwordEditText = findViewById(R.id.rp_signinPassword);
+        eyeIcon = findViewById(R.id.eye_icon);
         TextView dateofBirth=findViewById(R.id.dobEt);
         TextView forgotpass=findViewById(R.id.forgotpassword);
 
+        eyeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Toggle password visibility
+                if (passwordEditText.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye);
+                } else {
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    eyeIcon.setImageResource(R.drawable.ic_eye_off);
+                }
+                // Move cursor to the end of the input
+                passwordEditText.setSelection(passwordEditText.getText().length());
+            }
+        });
         handler.post(() -> {
             progressDialog = new ProgressDialog(Registration.this);
             progressDialog.setMessage("Loading, Please wait...Make sure you have a stable internet connection!");
@@ -202,11 +222,11 @@ public class Registration extends AppCompatActivity {
             public void onClick(View v) {
 
                 String email=loginEmail.getText().toString().trim();
-                String password=loginPass.getText().toString().trim();
+                String password=passwordEditText.getText().toString().trim();
                 if (email.length()==0){
                     loginEmail.setError("Write your email");
                 } else if (password.length()==0) {
-                    loginPass.setError("fill password");
+                    passwordEditText.setError("fill password");
                 }
                 else{
 
@@ -392,7 +412,7 @@ public class Registration extends AppCompatActivity {
                 if (date_birth.isEmpty()){
                     dateofBirth.setError("Field required");
                 } else if (passwd.isEmpty()) {
-                    pass.setText("Field required");
+                    pass.setError("Field required");
                 } else if (passwd.length()<6) {
                     pass.setError("Must contain atleast 6 characters");
                 } else if (confp.isEmpty()) {

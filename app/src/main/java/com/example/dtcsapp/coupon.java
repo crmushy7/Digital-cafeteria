@@ -81,8 +81,7 @@ public class coupon {
                             int newCount_today=Integer.parseInt(usedtodayString[0])+1;
                             int newCount_total=Integer.parseInt(usedtotalString[0])+1;
                             couponNumber=newCount_today+"";
-                            couponNumberRef.child("Used Today").setValue(newCount_today+" sold");
-                            couponNumberRef.child("Used Total").setValue(newCount_total+" sold").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            couponNumberRef.child("Used Today").setValue(newCount_today+" sold").addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     DatabaseReference couponRef = FirebaseDatabase.getInstance().getReference()
@@ -109,10 +108,14 @@ public class coupon {
                                                         String usedtoday1=snapshot.getValue(String.class);
                                                         String[] usedtodayString1=usedtoday1.split(" ");
                                                         int newCount_today1=Integer.parseInt(usedtodayString1[0])+1;
-                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold");
+                                                        String[] bei=foodSetGet.getFoodPrice().split(" ");
+                                                        int beimpya=Integer.parseInt(bei[0]);
+                                                        int finalbei=beimpya*newCount_today1;
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" "+finalbei+" sold");
                                                         DashBoard.progressDialog2.dismiss();
                                                     }else{
-                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 sold");
+                                                        String[] bei=foodSetGet.getFoodPrice().split(" ");
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold");
                                                         DashBoard.progressDialog2.dismiss();
                                                     }
                                                 }
