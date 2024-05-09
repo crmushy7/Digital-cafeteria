@@ -361,7 +361,7 @@ public class DashBoard extends AppCompatActivity {
                 File imFile=new File(DashBoard.user_profilePic);
                 Bitmap bitmap= BitmapFactory.decodeFile(imFile.getAbsolutePath());
                 topProfile.setImageBitmap(bitmap);
-                cardProfile.setImageBitmap(bitmap);
+//                cardProfile.setImageBitmap(bitmap);
             }
         });
 feedbackBtn.setOnClickListener(new View.OnClickListener() {

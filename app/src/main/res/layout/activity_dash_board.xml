@@ -557,23 +557,24 @@
                         android:src="@drawable/new_notification"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="Notifications"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_marginStart="3sp"
+                        android:gravity="center_vertical"
                         android:textStyle="bold"
 
 
                         />
                     <Switch
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:textOn="ON"
                         android:textOff="OFF"
-                        android:layout_gravity="end"
+                        android:layout_gravity="center_vertical"
                         android:checked="false"/>
 
                 </LinearLayout>
@@ -590,20 +591,23 @@
                         android:src="@drawable/new_save_history"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="Save History in Local storage"
                         android:fontFamily="sans-serif"
-
                         android:textSize="20sp"
                         android:textColor="@color/black"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginStart="3sp"
                         android:textStyle="bold"
                         />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableRight="@drawable/toggleoff"
-                        />
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="50sp"
+                        android:textOn="ON"
+                        android:textOff="OFF"
+                        android:layout_gravity="center_vertical"
+                        android:checked="true"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -618,20 +622,24 @@
                         android:src="@drawable/new_confirmation_by_pin"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="Confirmation by PIN"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-
-                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:layout_marginStart="3sp"
                         android:textStyle="bold"
                         />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableRight="@drawable/toggleoff"
-                        />
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="50sp"
+                        android:textOn="ON"
+                        android:textOff="OFF"
+                        android:layout_gravity="center_vertical"
+                        android:checked="false"/>
+
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -646,12 +654,14 @@
                         android:src="@drawable/new_app_info"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="App Info"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginStart="3sp"
                         android:textStyle="bold"
                         />
 
@@ -671,12 +681,14 @@
                         android:src="@drawable/new_deposit"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="Deposit"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginStart="3sp"
                         android:textStyle="bold"
                         />
 
@@ -697,12 +709,14 @@
                         android:src="@drawable/new_logout"/>
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50sp"
                         android:text="Log Out"
                         android:fontFamily="sans-serif"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:gravity="center"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginStart="3sp"
                         android:textStyle="bold"
                         />
 
