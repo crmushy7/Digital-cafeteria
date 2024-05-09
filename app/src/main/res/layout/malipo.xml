@@ -79,7 +79,7 @@
             android:textColor="@color/black"
             />
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/ad_deposit_button"
+            android:id="@+id/btn_failedtransaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Okay"
@@ -95,7 +95,7 @@
     </LinearLayout>
     <!--    success-->
     <LinearLayout
-        android:id="@+id/ad_success_layout"
+        android:id="@+id/malipo_success_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

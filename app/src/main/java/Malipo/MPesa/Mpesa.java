@@ -132,20 +132,19 @@ public class Mpesa {
                                         @Override
                                         public void onSuccess(Void unused) {
                                             DashBoard.progressDialog2.dismiss();
-                                            Toast.makeText(DashBoard.myContext, "success", Toast.LENGTH_SHORT).show();
-                                            DashBoard.afterMalipo();
+                                            DashBoard.afterMalipo("success");
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             DashBoard.progressDialog2.dismiss();
                                             Toast.makeText(DashBoard.myContext, "Failed due to "+e, Toast.LENGTH_SHORT).show();
-                                            DashBoard.afterMalipo();
+                                            DashBoard.afterMalipo(e+"");
                                         }
                                     });
                                 }else{
                                     Toast.makeText(DashBoard.myContext, "User does not exist "+"", Toast.LENGTH_SHORT).show();
-                                    DashBoard.progressDialog2.dismiss();
+
                                 }
                             }
 
@@ -154,7 +153,7 @@ public class Mpesa {
                                 // Handle error
                                 Toast.makeText(DashBoard.myContext, "failed due to "+error+"", Toast.LENGTH_SHORT).show();
                                 DashBoard.progressDialog2.dismiss();
-                                DashBoard.afterMalipo();
+                                DashBoard.afterMalipo(error+"");
                             }
                         });
                     }else {
@@ -162,9 +161,9 @@ public class Mpesa {
                             @Override
                             public void run() {
                                 Log.d("response",responseDesc+"");
-                                Toast.makeText(DashBoard.myContext, "Transaction failed due to "+responseDesc+"", Toast.LENGTH_LONG).show();
+//                                Toast.makeText(DashBoard.myContext, "Transaction failed due to "+responseDesc+"", Toast.LENGTH_LONG).show();
                                 DashBoard.progressDialog2.dismiss();
-                                DashBoard.afterMalipo();
+                                DashBoard.afterMalipo(responseDesc+"");
                             }
                         });
 

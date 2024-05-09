@@ -1598,13 +1598,19 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         Toast.makeText(DashBoard.this, "Item does not exist!", Toast.LENGTH_SHORT).show();
     }
     
-    public static void afterMalipo(){
+    public static void afterMalipo(String received){
         AlertDialog.Builder builder=new AlertDialog.Builder(myContext);
         View popupView = LayoutInflater.from(myContext).inflate(R.layout.malipo, null);
         builder.setView(popupView);
         malipodialog = builder.create();
         malipodialog.setCancelable(true);
         malipodialog.show();
+        TextView successtext=popupView.findViewById(R.id.tv_successtransaction);
+        TextView failuretext=popupView.findViewById(R.id.tv_transactionfailed);
+        Button okaySucc=popupView.findViewById(R.id.btn_transactionsuccess);
+        Button okayfailure=popupView.findViewById(R.id.btn_failedtransaction);
+        LinearLayout failure=popupView.findViewById(R.id.malipo_error_layout);
+        LinearLayout successful=popupView.findViewById(R.id.malipo_success_layout);
     }
 
 
