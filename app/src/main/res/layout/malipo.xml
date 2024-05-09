@@ -14,32 +14,7 @@
         android:orientation="vertical"
         android:visibility="gone"
         android:layout_margin="20sp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:id="@+id/tve_dismissError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                android:paddingLeft="14sp"
-                android:paddingRight="10sp"
-                android:layout_gravity="end|center_horizontal"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-        </LinearLayout>
+
         <LinearLayout
             android:layout_width="126sp"
             android:layout_height="126sp"
@@ -100,32 +75,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="20sp">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                />
-            <TextView
-                android:id="@+id/malipo_dismisSucces"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="X"
-                android:paddingLeft="14sp"
-                android:paddingRight="10sp"
-                android:layout_gravity="end|center_horizontal"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                />
-        </LinearLayout>
+
         <LinearLayout
             android:layout_width="135sp"
             android:layout_height="135sp"

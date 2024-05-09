@@ -1603,7 +1603,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         View popupView = LayoutInflater.from(myContext).inflate(R.layout.malipo, null);
         builder.setView(popupView);
         malipodialog = builder.create();
-        malipodialog.setCancelable(true);
+        malipodialog.setCancelable(false);
         malipodialog.show();
         TextView successtext=popupView.findViewById(R.id.tv_successtransaction);
         TextView failuretext=popupView.findViewById(R.id.tv_transactionfailed);
@@ -1611,6 +1611,27 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
         Button okayfailure=popupView.findViewById(R.id.btn_failedtransaction);
         LinearLayout failure=popupView.findViewById(R.id.malipo_error_layout);
         LinearLayout successful=popupView.findViewById(R.id.malipo_success_layout);
+        if (received.equals("success")){
+            failure.setVisibility(View.GONE);
+            successful.setVisibility(View.VISIBLE);
+            successtext.setText("Tsh "+KIASI_MALIPO+" has been added in your account !");
+            okaySucc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    malipodialog.dismiss();
+                }
+            });
+        }else{
+            failure.setVisibility(View.VISIBLE);
+            successful.setVisibility(View.GONE);
+            failuretext.setText("The transaction of Tsh "+KIASI_MALIPO+" you made did not succeed. This was due to "+received);
+            okayfailure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    malipodialog.dismiss();
+                }
+            });
+        }
     }
 
 
