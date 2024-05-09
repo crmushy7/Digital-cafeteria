@@ -30,7 +30,7 @@
             android:layout_height="80sp"
             android:layout_margin="10sp"
             android:gravity="center_vertical"
-            android:background="@drawable/deposit_bg"
+            android:background="@drawable/deposit_bg1"
             android:orientation="horizontal">
             <androidx.cardview.widget.CardView
                 android:layout_width="70sp"
@@ -102,7 +102,7 @@
             android:layout_height="80sp"
             android:layout_margin="10sp"
             android:gravity="center_vertical"
-            android:background="@drawable/deposit_bg"
+            android:background="@drawable/deposit_bg1"
             android:orientation="horizontal">
             <androidx.cardview.widget.CardView
                 android:layout_width="70sp"
@@ -138,7 +138,7 @@
             android:layout_height="80sp"
             android:layout_margin="10sp"
             android:gravity="center_vertical"
-            android:background="@drawable/deposit_bg"
+            android:background="@drawable/deposit_bg1"
             android:orientation="horizontal">
             <androidx.cardview.widget.CardView
                 android:layout_width="70sp"

@@ -133,12 +133,14 @@ public class Mpesa {
                                         public void onSuccess(Void unused) {
                                             DashBoard.progressDialog2.dismiss();
                                             Toast.makeText(DashBoard.myContext, "success", Toast.LENGTH_SHORT).show();
+                                            DashBoard.afterMalipo();
                                         }
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
                                             DashBoard.progressDialog2.dismiss();
                                             Toast.makeText(DashBoard.myContext, "Failed due to "+e, Toast.LENGTH_SHORT).show();
+                                            DashBoard.afterMalipo();
                                         }
                                     });
                                 }else{
@@ -152,6 +154,7 @@ public class Mpesa {
                                 // Handle error
                                 Toast.makeText(DashBoard.myContext, "failed due to "+error+"", Toast.LENGTH_SHORT).show();
                                 DashBoard.progressDialog2.dismiss();
+                                DashBoard.afterMalipo();
                             }
                         });
                     }else {
@@ -161,6 +164,7 @@ public class Mpesa {
                                 Log.d("response",responseDesc+"");
                                 Toast.makeText(DashBoard.myContext, "Transaction failed due to "+responseDesc+"", Toast.LENGTH_LONG).show();
                                 DashBoard.progressDialog2.dismiss();
+                                DashBoard.afterMalipo();
                             }
                         });
 

@@ -66,6 +66,7 @@ public class DashBoard extends AppCompatActivity {
     RecyclerView recyclerView;
     Thread thread;
     private AlertDialog dialog;
+    public static AlertDialog malipodialog;
     TextView meal_clock,meal_status;
     public static String timeStatus="BreakFast";
     public static String hideBalance="";
@@ -1595,6 +1596,15 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
 //        recyclerView.setVisibility(View.GONE);
         // Display a toast message indicating no matching items found
         Toast.makeText(DashBoard.this, "Item does not exist!", Toast.LENGTH_SHORT).show();
+    }
+    
+    public static void afterMalipo(){
+        AlertDialog.Builder builder=new AlertDialog.Builder(myContext);
+        View popupView = LayoutInflater.from(myContext).inflate(R.layout.malipo, null);
+        builder.setView(popupView);
+        malipodialog = builder.create();
+        malipodialog.setCancelable(true);
+        malipodialog.show();
     }
 
 
