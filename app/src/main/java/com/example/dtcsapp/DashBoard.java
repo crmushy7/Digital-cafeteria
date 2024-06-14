@@ -834,15 +834,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
     }
 
 
-    public static void newToast(String response){
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Toast.makeText(DashBoard.myContext, "Your message", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//        Toast.makeText(myContext, response+"", Toast.LENGTH_SHORT).show();
-    }
+
     private void updateUser(String updateType){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DashBoard.this);
@@ -1190,7 +1182,7 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                                                     refresh();
                                                     TextView alertmessageSucces=popupView.findViewById(R.id.fc_foodStatus);
 
-                                                    alertmessageSucces.setText(foodSetGet.getFoodPrice()+" deducted from your account");
+                                                    alertmessageSucces.setText(foodSetGet.getFoodPrice()+" was deducted from your account");
 
 
 
@@ -1621,7 +1613,17 @@ homeBtn.setOnClickListener(new View.OnClickListener() {
                     malipodialog.dismiss();
                 }
             });
-        }else{
+        } else if (received.equals("Invalid Use Case")) {
+            failure.setVisibility(View.VISIBLE);
+            successful.setVisibility(View.GONE);
+            failuretext.setText("The transaction of Tsh "+KIASI_MALIPO+" you made did not succeed. This was due to Invalid Phone Number");
+            okayfailure.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    malipodialog.dismiss();
+                }
+            });
+        } else{
             failure.setVisibility(View.VISIBLE);
             successful.setVisibility(View.GONE);
             failuretext.setText("The transaction of Tsh "+KIASI_MALIPO+" you made did not succeed. This was due to "+received);
