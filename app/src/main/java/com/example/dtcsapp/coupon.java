@@ -167,7 +167,8 @@ public class coupon {
                                         couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold");
                                         DashBoard.progressDialog2.dismiss();
                                     }else{
-                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 sold");
+                                        String[] bei=foodSetGet.getFoodPrice().split(" ");
+                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold");
                                         DashBoard.progressDialog2.dismiss();
                                     }
                                 }
