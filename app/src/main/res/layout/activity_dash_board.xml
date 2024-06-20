@@ -913,6 +913,7 @@
 
                             </LinearLayout>
                             <LinearLayout
+                                android:visibility="gone"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
@@ -1359,9 +1360,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@mipmap/app_logo_round"
-                        android:layout_weight="1"
                         />
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
@@ -1401,10 +1402,10 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/grey"
                     android:text="My History"
-                    android:layout_weight="1"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
                 <androidx.appcompat.widget.AppCompatButton
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="30sp"
                     android:background="@drawable/viewbalance"
@@ -1451,6 +1452,7 @@
             >
 
             <LinearLayout
+                android:visibility="gone"
                 android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -1482,6 +1484,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="vertical"

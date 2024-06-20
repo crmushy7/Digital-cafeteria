@@ -111,11 +111,76 @@ public class coupon {
                                                         String[] bei=foodSetGet.getFoodPrice().split(" ");
                                                         int beimpya=Integer.parseInt(bei[0]);
                                                         int finalbei=beimpya*newCount_today1;
-                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" "+finalbei+" sold");
-                                                        DashBoard.progressDialog2.dismiss();
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" "+finalbei+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                DatabaseReference cupounused=FirebaseDatabase.getInstance().getReference().child("Coupons Used").child(dateOnly);
+                                                                cupounused.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                        if (snapshot.exists()){
+                                                                            String zote=snapshot.child("Total Today").getValue(String.class);
+                                                                            String[] number_zote=zote.split(" ");
+                                                                            int namba_pekee=Integer.parseInt(number_zote[0])+1;
+                                                                            cupounused.child("Total Today").setValue(namba_pekee+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    DashBoard.progressDialog2.dismiss();
+                                                                                }
+                                                                            });
+                                                                        }else{
+                                                                            cupounused.child("Total Today").setValue("1 sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    DashBoard.progressDialog2.dismiss();
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
                                                     }else{
                                                         String[] bei=foodSetGet.getFoodPrice().split(" ");
-                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold");
+                                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                DatabaseReference cupounused=FirebaseDatabase.getInstance().getReference().child("Coupons Used").child(dateOnly);
+                                                                cupounused.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                                    @Override
+                                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                        if (snapshot.exists()){
+                                                                            String zote=snapshot.child("Total Today").getValue(String.class);
+                                                                            String[] number_zote=zote.split(" ");
+                                                                            int namba_pekee=Integer.parseInt(number_zote[0])+1;
+                                                                            cupounused.child("Total Today").setValue(namba_pekee+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    DashBoard.progressDialog2.dismiss();
+                                                                                }
+                                                                            });
+                                                                        }else{
+                                                                            cupounused.child("Total Today").setValue("1 sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void unused) {
+                                                                                    DashBoard.progressDialog2.dismiss();
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    }
+
+                                                                    @Override
+                                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                    }
+                                                                });
+                                                            }
+                                                        });
                                                         DashBoard.progressDialog2.dismiss();
                                                     }
                                                 }
@@ -164,12 +229,79 @@ public class coupon {
                                         String usedtoday1=snapshot.getValue(String.class);
                                         String[] usedtodayString1=usedtoday1.split(" ");
                                         int newCount_today1=Integer.parseInt(usedtodayString1[0])+1;
-                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold");
-                                        DashBoard.progressDialog2.dismiss();
+                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue(newCount_today1+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                DatabaseReference cupounused=FirebaseDatabase.getInstance().getReference().child("Coupons Used").child(dateOnly);
+                                                cupounused.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if (snapshot.exists()){
+                                                            String zote=snapshot.child("Total Today").getValue(String.class);
+                                                            String[] number_zote=zote.split(" ");
+                                                            int namba_pekee=Integer.parseInt(number_zote[0])+1;
+                                                            cupounused.child("Total Today").setValue(namba_pekee+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    DashBoard.progressDialog2.dismiss();
+                                                                }
+                                                            });
+                                                        }else{
+                                                            cupounused.child("Total Today").setValue("1 sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    DashBoard.progressDialog2.dismiss();
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+                                            }
+                                        });
+
                                     }else{
                                         String[] bei=foodSetGet.getFoodPrice().split(" ");
-                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold");
-                                        DashBoard.progressDialog2.dismiss();
+                                        couponNumberRef.child(foodSetGet.getFoodName()).setValue("1 "+bei[0]+ " sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void unused) {
+                                                DatabaseReference cupounused=FirebaseDatabase.getInstance().getReference().child("Coupons Used").child(dateOnly);
+                                                cupounused.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                        if (snapshot.exists()){
+                                                            String zote=snapshot.child("Total Today").getValue(String.class);
+                                                            String[] number_zote=zote.split(" ");
+                                                            int namba_pekee=Integer.parseInt(number_zote[0])+1;
+                                                            cupounused.child("Total Today").setValue(namba_pekee+" sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    DashBoard.progressDialog2.dismiss();
+                                                                }
+                                                            });
+                                                        }else{
+                                                            cupounused.child("Total Today").setValue("1 sold").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void unused) {
+                                                                    DashBoard.progressDialog2.dismiss();
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                                    }
+                                                });
+
+                                            }
+                                        });
+
                                     }
                                 }
 
